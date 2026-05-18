@@ -24,6 +24,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // 0. Ensure seeder images exist in storage (copies Git-tracked public assets to ignored storage)
+        @mkdir(storage_path('app/public/courses/thumbnails'), 0755, true);
+        @mkdir(storage_path('app/public/addons/thumbnails'), 0755, true);
+        @mkdir(storage_path('app/public/objects/thumbnails'), 0755, true);
+        @mkdir(storage_path('app/public/portfolio'), 0755, true);
+
+        @copy(public_path('imgs/courses-thumbnails/blender-thumbnail.jpg'), storage_path('app/public/courses/thumbnails/blender_course.jpg'));
+        @copy(public_path('imgs/our-work/omega3-1.png'), storage_path('app/public/courses/thumbnails/vfx_course.jpg'));
+        
+        @copy(public_path('imgs/our-work/mushroom-light.png'), storage_path('app/public/addons/thumbnails/lighting_pack.jpg'));
+        @copy(public_path('imgs/our-work/lego.png'), storage_path('app/public/addons/thumbnails/rig_pack.jpg'));
+        
+        @copy(public_path('imgs/our-work/donuts.png'), storage_path('app/public/objects/thumbnails/car_object.jpg'));
+        @copy(public_path('imgs/our-work/omega3-2.png'), storage_path('app/public/objects/thumbnails/furniture_object.jpg'));
+        
+        @copy(public_path('imgs/our-work/sushi.png'), storage_path('app/public/portfolio/work1.jpg'));
+        @copy(public_path('imgs/our-work/donuts.png'), storage_path('app/public/portfolio/work2.jpg'));
+        @copy(public_path('imgs/our-work/lego.png'), storage_path('app/public/portfolio/work3.jpg'));
+        @copy(public_path('imgs/our-work/mushroom-light.png'), storage_path('app/public/portfolio/work4.jpg'));
+
         // 1. Create Administrator
         Admin::create([
             'name' => 'Animfy Administrator',
