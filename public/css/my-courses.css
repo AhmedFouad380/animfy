@@ -1,0 +1,438 @@
+@font-face {
+  font-family: "Petit";
+  src: url("../fonts/Petit-Cochon.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+html{
+    scroll-behavior:smooth;
+    height:100%;
+}
+
+body{
+    background:#fef4f1;
+    color:#222;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.main-container{
+    width:90%;
+    max-width:1300px;
+    margin:auto;
+}
+
+.navbar{
+    height:75px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    box-shadow:0 10px 60px 6px rgba(0,0,0,0.15);
+}
+
+.logo-login{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.company-name-logo{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    font-size:25px;
+    text-decoration:none;
+    color:#222;
+    font-family: "Petit";
+}
+
+.logo-circle{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+/* =========================
+   USER DROPDOWN
+========================= */
+
+.user-dropdown{
+    position:relative;
+}
+
+.user-trigger{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    border: 1px solid #da6319;
+    border-radius: 50px;
+    background-color: #fef4f1;
+    color: #555;
+
+    padding:8px 14px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.user-trigger:hover{
+    background:#da6319;
+    color: #fff;
+}
+
+.user-img{
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.user-name{
+    font-weight:bold;
+    font-size:14px;
+}
+
+
+.user-trigger i{
+    font-size:12px;
+    transition: 0.3s;
+}
+
+.user-trigger.active i{
+    transform:rotate(180deg);
+}
+
+
+.dropdown-menu{
+    position:absolute;
+
+    top:65px;
+    right:0;
+
+    width:220px;
+
+    background:#fef4f1;
+    border: 1px solid #da6319;
+    border-radius:18px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.15);
+    padding:10px;
+
+    display:none;
+
+    flex-direction:column;
+
+    gap:5px;
+
+    z-index:999;
+}
+
+.dropdown-menu.active{
+    display:flex;
+}
+
+.dropdown-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    color:#555;
+
+    transition:0.3s;
+}
+
+.dropdown-item:hover{
+    background:#fef4f1;
+    color:#fff;
+    background-color: #da6319;
+
+}
+
+.logout-item{
+    color:#ef4444;
+}
+
+.logout-item:hover{
+    background:#ef4444;
+    color:#fff;
+}
+
+
+
+/* =========================
+   PAGE LAYOUT
+========================= */
+
+.container{
+    width:90%;
+    max-width:1300px;
+
+    margin:40px auto;
+
+    flex:1;
+}
+
+.page-title{
+    margin-bottom:35px;
+    font-size:34px;
+    font-weight:bold;
+}
+
+/* =========================
+   COURSES GRID
+========================= */
+
+.course-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:25px;
+    justify-content:center;
+}
+
+/* =========================
+   COURSE CARD
+========================= */
+
+.course-card{
+    width:320px;
+    background-color: #fff; 
+    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+    padding: 15px;
+    border-radius: 20px;
+    background: 
+        linear-gradient(#fff, #fff) padding-box, 
+        linear-gradient(to top, #da6319, transparent) border-box;
+        
+    border: 1px solid transparent;
+    transition:0.3s;
+    position:relative;
+}
+
+.course-card:hover{
+    transform:translateY(-5px);
+}
+
+.best-seller-tag{
+    position:absolute;
+
+    top:20px;
+    left:20px;
+
+    background:#eceb98;
+    color:#555;
+
+    padding:8px 14px;
+
+    border-radius:14px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    z-index:5;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+}
+
+.course-img{
+    width:100%;
+    border-radius:15px;
+}
+
+/* =========================
+   RATING
+========================= */
+
+.rating{
+    color:#da6319;
+    font-size:18px;
+    margin-top:10px;
+    font-weight: bold;
+}
+
+.stars{
+    display:flex;
+    align-items:center;
+    gap:5px;
+
+    color:#da6319;
+
+    font-size:16px;
+    font-weight:bold;
+}
+
+.stars span{
+    margin-left:6px;
+    color:#222;
+}
+
+/* =========================
+   COURSE CONTENT
+========================= */
+
+.course-title{
+    font-weight:bold;
+    margin:10px 0;
+    font-size:18px;
+}
+
+.course-slogan{
+    margin:10px 0;
+    font-size:12px;
+    color: #555;
+}
+
+/* =========================
+   META
+========================= */
+
+.meta{
+    color:#555;
+    font-size:13px;
+
+    display:flex;
+    align-items:center;
+    gap:25px;
+    margin-top:10px;
+    font-size:14px;
+}
+
+.meta-item{
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+}
+
+.meta-item i{
+    width:34px;
+    height:34px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#fef4f1;
+
+    color:#555;
+
+    font-size:16px;
+}
+
+/* =========================
+   WATCH BUTTON
+========================= */
+
+.watch-btn{
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    border:1px solid #da6319;
+    color:#da6319;
+    background:#fef4f1;
+    border-radius:12px;
+    cursor:pointer;
+    font-size: 12px;
+    font-weight:bold;
+    transition:0.3s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+}
+
+.watch-btn:hover{
+    background:#da6319;
+    color:#fff;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    margin-top:40px;
+
+    background:#0b0b2d;
+    color:#fff;
+
+    text-align:center;
+
+    padding:25px;
+}
+
+.company-name{
+    font-family: "Petit";
+    font-size: 25px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .navbar{
+        padding:10px 0;
+    }
+
+    .logo-login{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .page-title{
+        font-size:28px;
+    }
+
+    .course-container{
+        grid-template-columns:1fr;
+    }
+
+    .course-card{
+        width:100%;
+    }
+
+}

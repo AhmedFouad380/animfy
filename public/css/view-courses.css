@@ -1,0 +1,497 @@
+@font-face {
+  font-family: "Petit";
+  src: url("../fonts/Petit-Cochon.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+
+html{
+    scroll-behavior:smooth;
+    height:100%;
+}
+
+body{
+    background:#fef4f1;
+    color:#222;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    font-family: "Nunito";
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.main-container{
+    width:90%;
+    max-width:1300px;
+    margin:auto;
+}
+
+.navbar{
+    height:75px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    box-shadow:0 10px 60px 6px rgba(0,0,0,0.15);
+}
+
+.logo-login{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.company-name-logo{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    font-size:25px;
+    text-decoration:none;
+    color:#222;
+    font-family: "Petit";
+}
+
+.logo-circle{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+/* =========================
+   USER DROPDOWN
+========================= */
+
+.user-dropdown{
+    position:relative;
+}
+
+.user-trigger{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    border: 1px solid #da6319;
+    border-radius: 50px;
+    background-color: #fef4f1;
+    color: #555;
+
+    padding:8px 14px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.user-trigger:hover{
+    background:#da6319;
+    color: #fff;
+}
+
+.user-img{
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.user-name{
+    font-weight:bold;
+    font-size:14px;
+}
+
+
+.user-trigger i{
+    font-size:12px;
+    transition: 0.3s;
+}
+
+.user-trigger.active i{
+    transform:rotate(180deg);
+}
+
+
+.dropdown-menu{
+    position:absolute;
+
+    top:65px;
+    right:0;
+
+    width:220px;
+
+    background:#fef4f1;
+    border: 1px solid #da6319;
+    border-radius:18px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.15);
+    padding:10px;
+
+    display:none;
+
+    flex-direction:column;
+
+    gap:5px;
+
+    z-index:999;
+}
+
+.dropdown-menu.active{
+    display:flex;
+}
+
+.dropdown-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    color:#555;
+
+    transition:0.3s;
+}
+
+.dropdown-item:hover{
+    background:#fef4f1;
+    color:#fff;
+    background-color: #da6319;
+
+}
+
+.logout-item{
+    color:#ef4444;
+}
+
+.logout-item:hover{
+    background:#ef4444;
+    color:#fff;
+}
+
+
+
+/* =========================
+   PAGE LAYOUT
+========================= */
+
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background: #111827;
+  padding: 20px;
+  font-family: Arial;
+}
+
+.course-name{
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.chapter {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.chapter-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #da6319;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 5px 5px 0px 0px;
+    
+}
+
+.lessons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: #fff;
+  border: 1px solid #da6319;
+
+}
+
+.lessons li {
+  padding: 10px 12px;
+  color: #555;
+  cursor: pointer;
+}
+
+.lessons li:hover {
+  background: #da6319;
+  color: #fff;
+}
+
+.download-btn {
+  color: #555;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.3s;
+  margin-left: 5px;
+}
+
+.download-btn:hover {
+  color: #fff;
+}
+
+
+/* OPEN STATE */
+.chapter.open .lessons {
+  max-height: 300px;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.chapter.open .arrow {
+  transform: rotate(180deg);
+  transition: 0.3s;
+}
+/* Main */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.video-box{
+    width: 100%;
+    border-radius: 10px;
+}
+
+.video-box video {
+  width: 100%;
+  max-height: 70vh;
+  border-radius: 10px;
+}
+
+
+/* controls layout */
+.controls {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* center buttons */
+.center-controls {
+  display: flex;
+  gap: 15px;
+}
+
+/* review button (left) */
+.review-btn {
+    width:120px;
+    height:40px;
+    border:1px solid #da6319;
+    border-radius:20px;
+    color:#da6319;
+    background:#fef4f1;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.review-btn:hover {
+  background: #da6319;
+  color: #fff;
+}
+
+.previous-btn,
+.next-btn{
+    width:120px;
+    height:40px;
+    border:1px solid #da6319;
+    border-radius:20px;
+    color:#da6319;
+    background:#fef4f1;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.previous-btn:hover,
+.next-btn:hover{
+    color:#fff;
+    background:#da6319;
+}
+
+
+/* Popup Review */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter:blur(5px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+
+  width: 350px;
+  text-align: center;
+}
+
+.popup h2{
+    color: #da6319;
+}
+
+.stars span {
+  font-size: 28px;
+  cursor: pointer;
+  color: #444;
+  transition: 0.2s;
+}
+
+.stars span.active {
+  color: #ffb400;
+}
+
+textarea {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+  background: #fef4f1;
+  border:1px solid #ddd;
+  outline: none;
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+  resize: none;
+}
+
+textarea:focus{
+
+    border:1px solid #da6319;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.submit-btn,
+.cancel-btn{
+    width:120px;
+    height:40px;
+    border:1px solid #da6319;
+    border-radius:20px;
+    color:#da6319;
+    background:#fef4f1;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.submit-btn:hover,
+.cancel-btn:hover{
+    color:#fff;
+    background:#da6319;
+}
+
+/* LESSON INFO */
+.lesson-info {
+  margin: 15px 0px;
+}
+
+.lesson-title {
+  font-size: 22px;
+  color: #222;
+}
+
+.lesson-desc {
+  margin-top: 8px;
+  color: #555;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    margin-top:auto;
+
+    background:#0b0b2d;
+    color:#fff;
+
+    text-align:center;
+
+    padding:25px;
+}
+
+.company-name{
+    font-family: "Petit";
+    font-size: 25px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .navbar{
+        padding:10px 0;
+    }
+
+    .page-title{
+        font-size:28px;
+    }
+
+}

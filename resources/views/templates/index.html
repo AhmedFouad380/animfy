@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animfy Studio</title>
+    <link rel="icon" type="image/png" href="imgs/logo/Animfy-favicon.png">
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script>
+
+
+</head>
+
+<body>
+
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <div class="navbar">
+    <div class="container">
+
+      <div class="logo-login">
+        <a href="index.html" class="logo">
+          <img class="logo-circle"
+              src="imgs/logo/Animfy Logo.png" />
+          <span class="company-name-logo">ANIMFY</span>
+        </a>
+
+        <div class="auth-buttons">
+        <button class="reg-btn" onclick="openPopup('register-popup')">Register</button>
+        <button class="login-btn" onclick="openPopup('login-popup')">Login</button>
+        </div>
+        
+
+
+      </div>
+
+    </div>
+  </div>
+
+   <!-- =========================
+     LOGIN POPUP
+========================= -->
+
+<div id="login-popup" class="popup-overlay">
+
+    <div class="popup-box">
+
+        <button class="close-popup"
+                onclick="closePopup('login-popup')">
+            &times;
+        </button>
+
+        <h2>Login</h2>
+
+        <input type="email"
+               placeholder="Email Address" required>
+
+        <input type="password"
+               placeholder="Password" required>
+
+        <button class="popup-btn">
+            Login
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     REGISTER POPUP
+========================= -->
+
+<div id="register-popup" class="popup-overlay">
+
+    <div class="popup-box">
+
+        <button class="close-popup"
+                onclick="closePopup('register-popup')">
+            &times;
+        </button>
+
+        <h2>Create Account</h2>
+
+        <input id="fullName" type="text" placeholder="Full Name" required>
+
+        <input id="email" type="email" placeholder="Email Address" required>
+
+        <div class="phone-group">
+
+        <input id="phone" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Phone Number" required>
+
+        </div>
+
+        <input id="password" type="password" placeholder="Password" required>
+
+        <button class="popup-btn">
+            Register
+        </button>
+
+    </div>
+
+</div>
+
+
+  <!-- =========================
+       COVER
+  ========================== -->
+
+  <div class="cover">
+    <img src="imgs/covers/cover.jpg" alt="Cover Image" />
+  </div>
+
+  <!-- =========================
+       PROFILE
+  ========================== -->
+
+  <div class="container">
+
+    <div class="profile">
+
+      <div class="profile-box">
+
+        <img class="avatar" src="imgs/logo/Animfy Logo.png" alt="Avatar" />
+
+        <div>
+
+          <div class="title">Animfy Studio</div>
+
+          <div class="subtitle">
+            Animation Studio
+          </div>
+
+          <div class="description">
+            Animfy is a creative studio teaching 3D, video editing, and AI.
+          </div>
+
+          <div class="social-icons">
+
+            <a href="https://www.facebook.com/animfy.studio" target="_blank">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+
+            <a href="https://www.instagram.com/animfy.studio/" target="_blank">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="https://www.youtube.com/@animfy.studio" target="_blank">
+              <i class="fa-brands fa-youtube"></i>
+            </a>
+
+            <a href="https://www.tiktok.com/@animfy.studio" target="_blank">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+
+          </div>
+
+
+          <button class="products-btn active-btn-profile" onclick="showProducts()">Products</button>
+
+          <button class="bio-btn" onclick="showBio()">Bio</button>
+
+          <button class="portfolio-btn" onclick="showPortfolio()">Our Work</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       COURSES
+  ========================== -->
+
+  <div class="container">
+
+    <!-- PRODUCTS SECTION -->
+
+<div id="products-section" class="section">
+
+    <!-- PRODUCTS NAV -->
+
+    <div class="nav-section">
+
+        <nav class="products-nav">
+
+            <ul class="tabs-list">
+
+                <li class="tab-item active-btn-products-nav"
+                    onclick="showTab('courses', this)">
+                    Courses
+                </li>
+
+                <li class="tab-item"
+                    onclick="showTab('addons', this)">
+                    Addons
+                </li>
+
+                <li class="tab-item"
+                    onclick="showTab('obj', this)">
+                    3D Objects
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+    <!-- COURSES CONTENT -->
+
+    <div id="courses-content" class="tab-content">
+
+        <div class="course-container">
+
+            <!-- COURSE 1 --> 
+
+            <div class="course-card">
+
+              <div class="best-seller-tag">
+                Best Seller
+              </div>
+
+                <img class="course-img"
+                     src="imgs/courses-thumbnails/blender-thumbnail.jpg"
+                     alt="Course Thumbnail"/>
+
+                <div class="rating">
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span>5.0</span>
+                  </div>
+                </div>
+
+                <div class="course-title">
+                    Complete Blender Mega Course - كورس بليندر كامل للمبتدئين
+                </div>
+
+                <div class="course-slogan">
+                    Blender for Beginners: From Zero to 3D Artist
+                </div>
+                
+                <div class="meta">
+
+                  <span class="meta-item">
+                      <i class="fa-regular fa-clock"></i>
+                      18:36:36 hr
+                  </span>
+
+                  <span class="meta-item">
+                      <i class="fa-regular fa-circle-play"></i>
+                      89 Lectures
+                  </span>
+
+                </div>
+
+                <div class="price">
+                    999 EGP
+                    <span class="old-price">1999</span>
+                    <span class="dis-percentage">50%</span>
+                </div>
+
+                <a href="website pages/blender-course.html" class="buy-btn">
+                  Buy Now
+                </a>
+
+            </div>
+
+            <!-- COURSE 2 -->
+
+            <div class="course-card">
+
+                <img class="course-img"
+                     src="imgs/courses-thumbnails/blender-thumbnail.jpg"
+                     alt="Course Thumbnail"/>
+
+                <div class="rating">
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <span>4.8</span>
+                  </div>
+                </div>
+
+                <div class="course-title">
+                    Complete Blender Mega Course - كورس بليندر كامل للمبتدئين
+                </div>
+
+                <div class="course-slogan">
+                    Blender for Beginners: From Zero to 3D Artist
+                </div>
+
+                <div class="meta">
+
+                  <span class="meta-item">
+                      <i class="fa-regular fa-clock"></i>
+                      18:36:36 hr
+                  </span>
+
+                  <span class="meta-item">
+                      <i class="fa-regular fa-circle-play"></i>
+                      89 Lectures
+                  </span>
+
+                </div>
+
+                <div class="price">
+                    999 EGP
+                    <span class="old-price">1999</span>
+                    <span class="dis-percentage">50%</span>
+                </div>
+
+                <a href="website pages/blender-course.html" class="buy-btn">
+                  Buy Now
+                </a>
+
+            </div>
+
+            <!-- COURSE 3 -->
+
+            <div class="course-card">
+
+                <img class="course-img"
+                     src="imgs/courses-thumbnails/blender-thumbnail.jpg"
+                     alt="Course Thumbnail"/>
+
+                <div class="rating">
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span>5.0</span>
+                  </div>
+                </div>
+
+                <div class="course-title">
+                    Complete Blender Mega Course - كورس بليندر كامل للمبتدئين
+                </div>
+
+                <div class="course-slogan">
+                    Blender for Beginners: From Zero to 3D Artist
+                </div>
+
+                <div class="meta">
+
+                  <span class="meta-item">
+                      <i class="fa-regular fa-clock"></i>
+                      18:36:36 hr
+                  </span>
+
+                  <span class="meta-item">
+                      <i class="fa-regular fa-circle-play"></i>
+                      89 Lectures
+                  </span>
+
+                </div>
+
+                <div class="price">
+                    999 EGP
+                    <span class="old-price">1999</span>
+                    <span class="dis-percentage">50%</span>
+                </div>
+
+                <a href="website pages/blender-course.html" class="buy-btn">
+                  Buy Now
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Addons CONTENT -->
+
+    <div id="addons-content" class="tab-content">
+
+        <div class="addons-container">
+
+            <h2>Addons Coming Soon</h2>
+
+            <p>
+                Addons will be available soon.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- 3D Objects CONTENT -->
+
+    <div id="obj-content" class="tab-content">
+
+        <div class="obj-container">
+
+            <h2>3D Objects Coming Soon</h2>
+
+            <p>
+                3D Objects will appear here.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div id="bio-section" class="bio-section">
+
+        <h3>About Animfy Studio</h3>
+
+        <p>
+            At Animfy, we bring creativity and technology together to make learning 3D animation, video editing, and AI tools simple, practical, and fun. Our team of experienced artists and educators has worked with Blender, After Effects, Premiere Pro, and cutting-edge AI software, crafting lessons that empower students to create professional-quality work.
+
+We believe in learning by doing — every course we design is project-based, giving you real-world experience and creative confidence. Whether you’re an absolute beginner or an advanced creator, our step-by-step approach will help you master digital creation and unlock your artistic potential.
+
+Join thousands of learners growing their creative careers with Animfy — where imagination meets innovation.
+        </p>
+
+    </div>
+
+        <div id="portfolio-section" class="portfolio-section">
+
+        <!-- PORTFOLIO SLIDER -->
+
+<div class="portfolio-slider">
+
+    <div class="slider-track">
+
+        <!-- GROUP 1 -->
+
+        <div class="portfolio-group">
+
+            <div class="small-column">
+
+                <div class="small-card">
+                    <img src="imgs/our-work/sushi.png" alt="">
+                </div>
+
+                <div class="small-card">
+                    <img src="imgs/our-work/lego.png" alt="">
+                </div>
+
+            </div>
+
+            <div class="big-card">
+                <img src="imgs/our-work/omega3-2.png" alt="">
+            </div>
+
+        </div>
+
+        <!-- GROUP 2 -->
+
+        <div class="portfolio-group">
+
+            <div class="small-column">
+
+                <div class="small-card">
+                    <img src="imgs/our-work/omega3-1.png" alt="">
+                </div>
+
+                <div class="small-card">
+                    <img src="imgs/our-work/donuts.png" alt="">
+                </div>
+
+            </div>
+
+            <div class="big-card">
+                <img src="imgs/our-work/mushroom-light.png" alt="">
+            </div>
+
+        </div>
+
+        <!-- DUPLICATED -->
+
+        <div class="portfolio-group">
+
+            <div class="small-column">
+
+                <div class="small-card">
+                    <img src="imgs/our-work/sushi.png" alt="">
+                </div>
+
+                <div class="small-card">
+                    <img src="imgs/our-work/lego.png" alt="">
+                </div>
+
+            </div>
+
+            <div class="big-card">
+                <img src="imgs/our-work/omega3-2.png" alt="">
+            </div>
+
+        </div>
+
+        <div class="portfolio-group">
+
+            <div class="small-column">
+
+                <div class="small-card">
+                    <img src="imgs/our-work/omega3-1.png" alt="">
+                </div>
+
+                <div class="small-card">
+                    <img src="imgs/our-work/donuts.png" alt="">
+                </div>
+
+            </div>
+
+            <div class="big-card">
+                <img src="imgs/our-work/mushroom-light.png" alt="">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    </div>
+
+
+  </div>
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <div class="footer">
+    Powered by <span class="company-name">ANIMFY</span> 
+  </div>
+
+  <script src="js/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0"/>
+
+  <title>Blender Course</title>
+  <link rel="icon" type="image/png" href="../imgs/logo/Animfy-favicon.png">
+  <link rel="stylesheet" href="../css/blender-course.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/css/intlTelInput.css">
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script>
+
+
+</head>
+
+<body>
+
+<!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <div class="navbar">
+    <div class="container">
+
+      <div class="logo-login">
+        <a href="../index.html" class="logo">
+          <img class="logo-circle"
+              src="../imgs/logo/Animfy Logo.png" />
+          <span class="company-name-logo">ANIMFY</span>
+        </a>
+
+        <div class="auth-buttons">
+        <button class="reg-btn" onclick="openPopup('register-popup')">Register</button>
+        <button class="login-btn" onclick="openPopup('login-popup')">Login</button>
+        </div>
+        
+
+
+      </div>
+
+    </div>
+  </div>
+
+   <!-- =========================
+     LOGIN POPUP
+========================= -->
+
+<div id="login-popup" class="popup-overlay">
+
+    <div class="popup-box">
+
+        <button class="close-popup"
+                onclick="closePopup('login-popup')">
+            &times;
+        </button>
+
+        <h2>Login</h2>
+
+        <input type="email"
+               placeholder="Email Address" required>
+
+        <input type="password"
+               placeholder="Password" required>
+
+        <button class="popup-btn">
+            Login
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     REGISTER POPUP
+========================= -->
+
+<div id="register-popup" class="popup-overlay">
+
+    <div class="popup-box">
+
+        <button class="close-popup"
+                onclick="closePopup('register-popup')">
+            &times;
+        </button>
+
+        <h2>Create Account</h2>
+
+        <input id="fullName" type="text" placeholder="Full Name" required>
+
+        <input id="email" type="email" placeholder="Email Address" required>
+
+        <div class="phone-group">
+
+        <input id="phone" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Phone Number" required>
+
+        </div>
+
+        <input id="password" type="password" placeholder="Password" required>
+
+        <button class="popup-btn" onclick="handleRegister()">
+            Register
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN LAYOUT
+========================= --> 
+
+<section class="course-layout">
+
+  <div class="container main-grid">
+
+    <!-- LEFT SIDE -->
+
+    <div class="left-content">
+
+
+      <!-- ABOUT -->
+
+      <div class="card">
+
+        
+      <!-- THUMBNAIL -->
+
+      <div class="thumbnail-wrapper">
+
+        <span class="badge">
+          BEST SELLER
+        </span>
+
+        <img src="../imgs/courses-thumbnails/blender-thumbnail.jpg"
+             alt="Course Thumbnail"
+             class="course-thumbnail">
+
+      </div>
+
+      <!-- TITLE -->
+
+      <h1 class="course-title">
+        Complete Blender Mega Course - كورس بليندر كامل للمبتدئين
+      </h1>
+
+      <!-- DESCRIPTION
+       
+      <p class="course-description">
+
+        Learn Blender from scratch and master
+        modeling, rendering, animation,
+        geometry nodes, VFX and AI workflows.
+
+      </p>
+      -->
+
+      
+
+      <!-- META -->
+
+      <div class="hero-meta">
+
+        <div class="meta-item">
+
+          <i class="fa-solid fa-star"></i>
+
+          5.0 Rating
+
+        </div>
+
+        <div class="meta-item">
+
+          <i class="fa-regular fa-clock"></i>
+
+          18+ Hours
+
+        </div>
+
+        <div class="meta-item">
+
+          <i class="fa-solid fa-circle-play"></i>
+
+          89 Lessons
+
+        </div>
+
+        <div class="meta-item">
+
+          <i class="fa-solid fa-user-graduate"></i>
+
+          2,500 Enrollments
+
+        </div>
+
+      </div>
+
+        <h2>
+          About This Course
+        </h2>
+
+        <div class="course-info">
+
+                <div>
+                    <i class="fa-regular fa-clock"></i>
+                    Lifetime Access
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-mobile-screen"></i>
+                    Mobile & Desktop
+                </div>
+
+        </div>
+
+        <h2 class="overview-text">Watch Course Overview</h2>
+
+        <div class="overview-video">
+            <iframe
+                src="https://www.youtube.com/embed/N86Fwhk6lvA?si=z7i_84JdMkgO_U1D"
+                title="Course Preview"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <p id="description-header">Blender for Beginners: From Zero to 3D Artist</p>
+
+        <p class="description-text">
+            Welcome to my beginner-friendly Blender course — the perfect starting point 
+            for anyone who wants to dive into the world of 3D design! Whether you're an aspiring artist, 
+            content creator, game developer, or just curious about 3D, this course will guide you step-by-step 
+            through the core tools and concepts of Blender.
+        </p>
+
+        <p class="description-text">
+        You’ll learn everything from navigating the Blender interface to creating your 
+        first 3D models, adding textures, lighting scenes, animating objects, and rendering 
+        your final projects. I break down complex ideas into simple, practical lessons that are 
+        easy to follow — even if you’ve never touched 3D software before.
+        </p>
+        
+        <p class="description-text">
+        By the end of the course, you won’t just know how to use Blender — you’ll create 
+        real projects and build a solid foundation that prepares you for more advanced 3D work, 
+        whether it’s visual effects, animation, or game design.
+        </p>
+
+        <p class="description-text">
+        No prior experience is needed. Just bring your curiosity, creativity, 
+        and willingness to learn — and I’ll help you turn that into real 3D skills. 
+        You'll also gain tips, shortcuts, and insights from my personal workflow that 
+        will save you hours and boost your confidence as a 3D artist.
+        </p>
+
+        <p>
+        Let’s start your journey into the 3D world together — see you inside the course!
+        </p>
+
+      </div>
+
+      <!-- LEARN -->
+
+      <div class="card">
+
+        <h2>
+          What You'll Learn
+        </h2>
+
+        <div class="learn-grid">
+
+          <div class="learn-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            Use Blender and understand it's interface.
+
+          </div>
+
+          <div class="learn-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            Understand the principles of modelling.
+
+          </div>
+
+          <div class="learn-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            Create 3D models with simple colors.
+
+          </div>
+
+          <div class="learn-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            Learn the basics of animation.
+
+          </div>
+
+          <div class="learn-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            Create your own materials.
+
+          </div>
+
+          <div class="learn-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            UV map and unwrap your models.
+
+          </div>
+
+          <div class="learn-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            Create animations for your objects.
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CURRICULUM -->
+
+      <div class="card">
+
+    <h2>Course Curriculum</h2>
+
+    <div class="chapter chapter-open">
+
+        <button class="chapter-header">
+            Introduction To Blender
+
+            <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <div class="chapter-meta">
+
+            <span>
+                <i class="fa-solid fa-film"></i>
+                5 Videos
+            </span>
+
+            <span>
+                <i class="fa-regular fa-clock"></i>
+                45 min
+            </span>
+
+        </div>
+
+        <div class="chapter-content">
+
+            <div class="lesson">
+
+                <div class="lesson-left">
+
+                    <i class="fa-solid fa-circle-play preview-icon"></i>
+
+                    <span>Blender Interface Overview</span>
+
+                    <span class="preview-badge">Preview</span>
+
+                </div>
+
+                <div class="lesson-time">
+                    08:30
+                </div>
+
+            </div>
+
+
+            <div class="lesson">
+
+    <div class="lesson-left">
+
+        <i class="fa-solid fa-circle-play"></i>
+
+        <span class="lesson-title">
+            Blender Interface Overview
+        </span>
+
+
+    </div>
+
+    <div class="lesson-time">
+        08:30
+    </div>
+
+</div>
+
+        </div>
+
+    </div>
+
+    <div class="chapter">
+
+        <button class="chapter-header">
+            Introduction To Blender
+
+            <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <div class="chapter-meta">
+
+            <span>
+                <i class="fa-solid fa-film"></i>
+                5 Videos
+            </span>
+
+            <span>
+                <i class="fa-regular fa-clock"></i>
+                45 min
+            </span>
+
+        </div>
+
+        <div class="chapter-content">
+
+            <div class="lesson">
+
+                <div class="lesson-left">
+
+                    <i class="fa-solid fa-circle-play preview-icon"></i>
+
+                    <span>Blender Interface Overview</span>
+
+                    <span class="preview-badge">Preview</span>
+
+                </div>
+
+                <div class="lesson-time">
+                    08:30
+                </div>
+
+            </div>
+
+
+            <div class="lesson">
+
+    <div class="lesson-left">
+
+        <i class="fa-solid fa-circle-play"></i>
+
+        <span class="lesson-title">
+            Blender Interface Overview
+        </span>
+
+
+    </div>
+
+    <div class="lesson-time">
+        08:30
+    </div>
+
+</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    
+    <!-- Review -->
+
+      <div class="reviews-wrapper">
+        
+      <div class="card reviews-card">
+
+    <h2>Reviews
+        <span class="review-count">
+        (4)
+        </span>
+    </h2>
+
+    <div class="review">
+
+        <div class="review-header">
+
+            <div class="review-user">
+                <img src="../imgs/users-imgs/user.jpg" alt="">
+                <div>
+                    <h4>Ahmed Mohamed</h4>
+                    <div class="rating">
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span>5.0</span>
+                  </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <p>
+            The course is amazing! I learned Blender from scratch and now I can create 3D models easily.
+        </p>
+
+    </div>
+
+        <div class="review">
+
+        <div class="review-header">
+
+            <div class="review-user">
+                <img src="../imgs/users-imgs/user.jpg" alt="">
+                <div>
+                    <h4>Ahmed Mohamed</h4>
+                    <div class="rating">
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span>5.0</span>
+                  </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <p>
+            The course is amazing! I learned Blender from scratch and now I can create 3D models easily.
+        </p>
+
+    </div>
+
+        <div class="review">
+
+        <div class="review-header">
+
+            <div class="review-user">
+                <img src="../imgs/users-imgs/user.jpg" alt="">
+                <div>
+                    <h4>Ahmed Mohamed</h4>
+                    <div class="rating">
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span>5.0</span>
+                  </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <p>
+            The course is amazing! I learned Blender from scratch and now I can create 3D models easily.
+        </p>
+
+    </div>
+
+
+    <div class="review">
+
+        <div class="review-header">
+
+            <div class="review-user">
+                <img src="../imgs/users-imgs/user.jpg" alt="">
+                <div>
+                    <h4>Sara Ali</h4>
+                    <div class="rating">
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span>5.0</span>
+                  </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <p>
+            Very well structured course and easy to follow. Highly recommended!
+        </p>
+
+    </div>
+
+</div>
+
+    </div>
+</div>
+
+    <!-- RIGHT SIDE -->
+    
+<div class="sidebar">
+
+    <div class="sticky-wrapper">
+
+        <div class="price-card">
+
+            <div class="price">
+                    999 EGP
+                    <span class="old-price">1999</span>
+                    <span class="dis-percentage">50%</span>
+                </div>
+            
+            <div class="rating-priceCard">
+                <div class="stars-priceCard">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span>5.0</span>
+                </div>
+            </div>
+            <p>You can pay through</p>
+
+            <div class="payment-methods">
+                <img src="../imgs/payment-methods/mastercard.png" alt="Mastercard">
+                <img src="../imgs/payment-methods/visa.png" alt="Visa">
+                <img src="../imgs/payment-methods/vodafone.png" alt="Vodafone">
+                <img src="../imgs/payment-methods/etisalat.png" alt="Etisalat">
+                <img src="../imgs/payment-methods/orange.png" alt="Orange">
+            </div>
+
+            <button class="buy-btn" onclick="buyNow()">
+                Enroll Now
+            </button>
+
+        </div>
+
+    </div>
+
+</div>     
+
+
+  </div>
+
+</section>
+
+ <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <div class="footer">
+    Powered by <span class="company-name">ANIMFY</span> 
+  </div>
+
+<script src="../js/blender-course.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script>
+
+
+</body>
+</html>

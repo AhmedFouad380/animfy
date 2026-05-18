@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0"/>
+
+  <title>Blender Course</title>
+  <link rel="icon" type="image/png" href="../imgs/logo/Animfy-favicon.png">
+  <link rel="stylesheet" href="../css/view-courses.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/css/intlTelInput.css">
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script>
+
+
+</head>
+<body>
+
+    <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <div class="navbar">
+    <div class="main-container">
+
+      <div class="logo-login">
+        <a href="../index.html" class="logo">
+          <img class="logo-circle"
+              src="../imgs/logo/Animfy Logo.png" />
+          <span class="company-name-logo">ANIMFY</span>
+        </a>
+
+            <div class="user-dropdown">
+
+              <div class="user-trigger" id="user-trigger">
+
+                <img src="../imgs/users-imgs/user.jpg" class="user-img">
+
+                <span class="user-name">
+                  Omar Yassin
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </div>
+
+              <div class="dropdown-menu" id="dropdown-menu">
+
+                <a href="../website pages/my-courses.html" class="dropdown-item">
+                  <i class="fa-solid fa-book"></i>
+                  My Courses
+                </a>
+
+                <a href="#" class="dropdown-item logout-item">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  Logout
+                </a>
+
+              </div>
+
+            </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="container">
+<div class="layout">
+
+  <!-- Sidebar -->
+<div class="sidebar">
+
+  <h2 class="course-name">Course Name</h2>
+
+  <!-- Chapter 1 (OPEN BY DEFAULT) -->
+  <div class="chapter open">
+    <div class="chapter-header">
+      <span>Chapter 1</span>
+      <i class="fa-solid fa-chevron-down arrow"></i>
+    </div>
+
+    <ul class="lessons">
+      <li class="lesson">
+        <span>Lesson 1</span>
+        <a class="download-btn" href="../uploads/course-attachment/Downloads.zip" download>
+          <i class="fa-solid fa-download"></i>
+        </a>
+      </li>
+
+      <li>Lesson 2</li>
+    </ul>
+  </div>
+
+  <!-- Chapter 2 -->
+  <div class="chapter">
+    <div class="chapter-header">
+      <span>Chapter 2</span>
+      <i class="fa-solid fa-chevron-down arrow"></i>
+    </div>
+
+    <ul class="lessons">
+      <li>Lesson 3</li>
+      <li>Lesson 4</li>
+    </ul>
+  </div>
+
+</div>
+
+  <!-- Main Video Area -->
+  <div class="main">
+
+    <div class="video-box">
+      <video controls>
+        <source src="../uploads/courses/3 Second Video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+  <!-- Controls -->
+    <div class="controls">
+
+        <!-- LEFT SIDE -->
+      <button class="review-btn" id="openReview">
+          Add Review
+      </button>
+
+        <!-- CENTER -->
+      <div class="center-controls">
+        <button class="previous-btn">Previous</button>
+        <button class="next-btn">Next</button>
+      </div>
+
+    </div>
+
+<!-- LESSON INFO -->
+<div class="lesson-info">
+  <h2 class="lesson-title">Introduction</h2>
+  <p class="lesson-desc">
+    In this lesson we will cover the basics of Blender installation and setup process.
+  </p>
+</div>
+  </div>
+
+</div>
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <div class="footer">
+    Powered by <span class="company-name">ANIMFY</span> 
+  </div>
+
+
+
+<div class="overlay" id="reviewPopup">
+
+  <div class="popup">
+
+    <h2>Rate This Course</h2>
+
+    <!-- Stars -->
+    <div class="stars" id="stars">
+      <span data-value="1">★</span>
+      <span data-value="2">★</span>
+      <span data-value="3">★</span>
+      <span data-value="4">★</span>
+      <span data-value="5">★</span>
+    </div>
+
+    <!-- Review text -->
+    <textarea placeholder="Write your review..."></textarea>
+
+    <!-- Buttons -->
+    <div class="popup-actions">
+      <button id="closeReview" class="cancel-btn">Cancel</button>
+      <button class="submit-btn">Submit</button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="../js/view-courses.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script>
+</body>
+</html>
