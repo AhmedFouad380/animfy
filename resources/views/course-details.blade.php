@@ -252,7 +252,7 @@
           </div>
 
           @auth
-            <a href="{{ route('checkout', $course->id) }}" class="buy-btn" style="text-align: center; display: block; text-decoration: none; line-height: 2.5;">
+            <a href="{{ route('checkout', $course->id) }}" class="buy-btn" style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
                 {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
             </a>
           @else
