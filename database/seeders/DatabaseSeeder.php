@@ -391,5 +391,20 @@ class DatabaseSeeder extends Seeder
             'size' => 'big',
             'is_active' => true,
         ]);
+
+        // 12. Create Default Brand Settings
+        \App\Models\Setting::set('site_name_ar', 'أنيمفاي');
+        \App\Models\Setting::set('site_name_en', 'Animfy');
+        \App\Models\Setting::set('contact_phone', '01012345678');
+        \App\Models\Setting::set('contact_email', 'info@animfy.com');
+        \App\Models\Setting::set('social_facebook', 'https://www.facebook.com/animfy.studio');
+        \App\Models\Setting::set('social_instagram', 'https://www.instagram.com/animfy.studio/');
+        \App\Models\Setting::set('social_youtube', 'https://www.youtube.com/@animfy.studio');
+        \App\Models\Setting::set('social_tiktok', 'https://www.tiktok.com/@animfy.studio');
+        \App\Models\Setting::set('meta_title_ar', 'أكاديمية أنيمفاي - تعليم ثلاثي الأبعاد والأنيميشن');
+        \App\Models\Setting::set('meta_title_en', 'Animfy Academy - Learn 3D & Animation');
+        \App\Models\Setting::set('meta_description_ar', 'منصة احترافية لتعلم الرسوم المتحركة ثلاثية الأبعاد، المونتاج، والذكاء الاصطناعي من الصفر وحتى الاحتراف.');
+        \App\Models\Setting::set('meta_description_en', 'Animfy is a creative studio teaching 3D, video editing, and AI tools from scratch to professional.');
+        \App\Models\Setting::set('meta_keywords', 'blender, 3d, animation, vfx, video editing, courses');
     }
 }

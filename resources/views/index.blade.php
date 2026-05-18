@@ -27,10 +27,18 @@
           </div>
 
           <div class="social-icons">
-            <a href="https://www.facebook.com/animfy.studio" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/animfy.studio/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@animfy.studio" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@animfy.studio" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            @if($fb = \App\Models\Setting::get('social_facebook'))
+              <a href="{{ $fb }}" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+            @endif
+            @if($ig = \App\Models\Setting::get('social_instagram'))
+              <a href="{{ $ig }}" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            @endif
+            @if($yt = \App\Models\Setting::get('social_youtube'))
+              <a href="{{ $yt }}" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+            @endif
+            @if($tk = \App\Models\Setting::get('social_tiktok'))
+              <a href="{{ $tk }}" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            @endif
           </div>
 
           <button class="products-btn active-btn-profile" onclick="showProducts()">

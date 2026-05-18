@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Animfy Studio</title>
-    <link rel="icon" type="image/png" href="{{ asset('imgs/logo/Animfy-favicon.png') }}">
+    <title>{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('meta_title_ar', 'أكاديمية أنيمفاي - تعليم ثلاثي الأبعاد والأنيميشن') : \App\Models\Setting::get('meta_title_en', 'Animfy Academy - Learn 3D & Animation') }}</title>
+    <meta name="description" content="{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('meta_description_ar', 'منصة احترافية لتعلم الرسوم المتحركة ثلاثية الأبعاد، المونتاج، والذكاء الاصطناعي من الصفر وحتى الاحتراف.') : \App\Models\Setting::get('meta_description_en', 'Animfy is a creative studio teaching 3D, video editing, and AI tools from scratch to professional.') }}" />
+    <meta name="keywords" content="{{ \App\Models\Setting::get('meta_keywords', 'blender, 3d, animation, vfx') }}" />
+    <link rel="icon" type="image/png" href="{{ \App\Models\Setting::get('site_logo') ? asset('storage/' . \App\Models\Setting::get('site_logo')) : asset('imgs/logo/Animfy-favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -87,17 +89,21 @@
     <div class="container">
       <div class="logo-login">
         <a href="{{ route('home') }}" class="logo">
-          <img class="logo-circle" src="{{ asset('imgs/logo/Animfy Logo.png') }}" />
-          <span class="company-name-logo">ANIMFY</span>
+          @if($logo = \App\Models\Setting::get('site_logo'))
+            <img class="logo-circle" src="{{ asset('storage/' . $logo) }}" alt="Logo" />
+          @else
+            <img class="logo-circle" src="{{ asset('imgs/logo/Animfy Logo.png') }}" alt="Logo" />
+          @endif
+          <span class="company-name-logo">{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('site_name_ar', 'ANIMFY') : \App\Models\Setting::get('site_name_en', 'ANIMFY') }}</span>
         </a>
 
         <div class="auth-buttons">
           <!-- Language Switcher -->
-          @if(app()->getLocale() === 'ar')
+          <!-- @if(app()->getLocale() === 'ar')
             <a href="{{ route('locale.set', 'en') }}" class="lang-switch-btn">English</a>
           @else
             <a href="{{ route('locale.set', 'ar') }}" class="lang-switch-btn">العربية</a>
-          @endif
+          @endif -->
 
           @auth
             <a href="{{ route('my-courses') }}" class="dashboard-link">
@@ -183,7 +189,7 @@
        FOOTER
   =========================================== -->
   <div class="footer">
-    Powered by <span class="company-name">ANIMFY</span> 
+    Powered by <span class="company-name">{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('site_name_ar', 'ANIMFY') : \App\Models\Setting::get('site_name_en', 'ANIMFY') }}</span> 
   </div>
 
   <script src="{{ asset('js/script.js') }}"></script>
