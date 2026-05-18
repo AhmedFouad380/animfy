@@ -12,6 +12,7 @@ class PaymobService
     protected string $iframeId;
     protected string $hmacSecret;
     protected string $baseUrl = 'https://accept.paymob.com/api';
+    public ?string $lastError = null;
 
     public function __construct()
     {
@@ -35,9 +36,11 @@ class PaymobService
                 return $response->json('token');
             }
 
+            $this->lastError = 'Auth Token Request Failed: ' . ($response->json('detail') ?? $response->body() ?? 'Unknown Error');
             Log::error('Paymob Auth Token Request Failed: ' . $response->body());
             return null;
         } catch (\Exception $e) {
+            $this->lastError = 'Auth Token Exception: ' . $e->getMessage();
             Log::error('Paymob Auth Token Exception: ' . $e->getMessage());
             return null;
         }
@@ -71,9 +74,11 @@ class PaymobService
                 return $response->json('id'); // Paymob Order ID
             }
 
+            $this->lastError = 'Create Order Request Failed: ' . ($response->json('message') ?? $response->body() ?? 'Unknown Error');
             Log::error('Paymob Create Order Request Failed: ' . $response->body());
             return null;
         } catch (\Exception $e) {
+            $this->lastError = 'Create Order Exception: ' . $e->getMessage();
             Log::error('Paymob Create Order Exception: ' . $e->getMessage());
             return null;
         }
@@ -96,7 +101,7 @@ class PaymobService
             $firstName = $nameParts[0] ?? 'Student';
             $lastName = $nameParts[1] ?? 'Student';
 
-            $response = Http::post("{$this->baseUrl}/accept/payment_keys", [
+            $response = Http::post("{$this->baseUrl}/acceptance/payment_keys", [
                 'auth_token' => $authToken,
                 'amount_cents' => $amountCents,
                 'expiration' => 3600, // 1 hour expiration
@@ -124,9 +129,11 @@ class PaymobService
                 return $response->json('token'); // Payment Token
             }
 
+            $this->lastError = 'Get Payment Key Failed: ' . ($response->json('detail') ?? $response->body() ?? 'Unknown Error');
             Log::error('Paymob Get Payment Key Failed: ' . $response->body());
             return null;
         } catch (\Exception $e) {
+            $this->lastError = 'Payment Key Exception: ' . $e->getMessage();
             Log::error('Paymob Payment Key Exception: ' . $e->getMessage());
             return null;
         }

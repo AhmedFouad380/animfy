@@ -63,12 +63,13 @@ class PaymentController extends Controller
 
         $price = $course->discount_price ?? $course->price;
         
-        // Pass enrollment ID as the merchant_order_id to cross-reference on response
+        // Pass unique merchant_order_id to Paymob to prevent "duplicate" order errors on re-attempts
+        $merchantOrderId = $enrollment->id . '_' . time();
         $paymobOrderId = $this->paymob->createOrder(
             $authToken, 
             $price, 
             $course->title, 
-            (string) $enrollment->id
+            $merchantOrderId
         );
 
         if (!$paymobOrderId) {
@@ -108,7 +109,9 @@ class PaymentController extends Controller
             return redirect()->route('home')->with('error', 'Invalid checkout session.');
         }
 
-        $enrollment = Enrollment::find($merchantOrderId);
+        // Extract original enrollment ID from the unique merchant_order_id (Format: {enrollment_id}_{timestamp})
+        $enrollmentId = explode('_', $merchantOrderId)[0];
+        $enrollment = Enrollment::find($enrollmentId);
         if (!$enrollment) {
             return redirect()->route('home')->with('error', 'Enrollment details not found.');
         }
@@ -181,7 +184,9 @@ class PaymentController extends Controller
         $paymentMethod = $obj['source_data']['type'] ?? 'card';
 
         if ($merchantOrderId) {
-            $enrollment = Enrollment::find($merchantOrderId);
+            // Extract original enrollment ID from the unique merchant_order_id (Format: {enrollment_id}_{timestamp})
+            $enrollmentId = explode('_', $merchantOrderId)[0];
+            $enrollment = Enrollment::find($enrollmentId);
             if ($enrollment) {
                 if ($success) {
                     $enrollment->update(['status' => 'active']);
@@ -211,9 +216,12 @@ class PaymentController extends Controller
      */
     private function handleCheckoutFailure($course)
     {
+        $errorDetails = $this->paymob->lastError ? ' Details: [' . $this->paymob->lastError . ']' : '';
+
         $message = app()->getLocale() === 'ar'
-            ? 'عذراً، فشل الاتصال ببوابة الدفع Paymob. يرجى التواصل مع الدعم الفني.'
-            : 'Sorry, we could not connect to Paymob payment gateway. Please contact support.';
+            ? 'عذراً، فشل الاتصال ببوابة الدفع Paymob. يرجى التواصل مع الدعم الفني.' . ($errorDetails ? ' التفاصيل: ' . $errorDetails : '')
+            : 'Sorry, we could not connect to Paymob payment gateway. Please contact support.' . $errorDetails;
+
         return redirect()->route('course.show', $course->slug)->with('error', $message);
     }
 }
