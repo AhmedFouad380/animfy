@@ -3,19 +3,12 @@
 namespace App\Filament\Resources\ThreeDObjectResource\Pages;
 
 use App\Filament\Resources\ThreeDObjectResource;
-use Filament\Actions;
+use App\Filament\Traits\TranslatableCreatePage;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateThreeDObject extends CreateRecord
 {
-    use CreateRecord\Concerns\Translatable;
+    use TranslatableCreatePage;
 
     protected static string $resource = ThreeDObjectResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-        ];
-    }
 }

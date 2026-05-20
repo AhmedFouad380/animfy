@@ -7,13 +7,11 @@ use App\Models\Chapter;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class ChapterResource extends Resource
 {
-    use Translatable;
 
     protected static ?string $model = Chapter::class;
 

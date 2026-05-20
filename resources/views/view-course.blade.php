@@ -5,43 +5,63 @@
 
 <style>
     /* Premium visual styling for the dynamic classroom */
+    .layout {
+        min-height: calc(100vh - 75px);
+        display: flex;
+        background: #fef4f1;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .sidebar {
+        min-height: calc(100vh - 75px);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 20px 0 !important;
+    }
+    .lessons {
+        background: transparent !important;
+        border: none !important;
+        padding: 10px !important;
+    }
     .lessons li {
         cursor: pointer;
-        padding: 12px 16px;
-        border-radius: 6px;
+        padding: 12px 16px !important;
+        border-radius: 6px !important;
         transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: #bbb;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        color: #bbb !important;
+        background: transparent !important;
+        margin-bottom: 4px;
     }
     .lessons li:hover {
-        background: rgba(255, 255, 255, 0.05);
-        color: #fff;
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: #fff !important;
     }
     .lessons li.active-lesson {
-        background: #f59e0b;
-        color: #000;
-        font-weight: 600;
+        background: #f59e0b !important;
+        color: #000 !important;
+        font-weight: 600 !important;
     }
     .lessons li.active-lesson a {
-        color: #000;
+        color: #000 !important;
     }
     .download-btn {
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        color: #fff;
-        padding: 4px 8px;
-        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: none !important;
+        color: #fff !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
         cursor: pointer;
         transition: all 0.2s;
         text-decoration: none;
-        display: inline-flex;
-        align-items: center;
+        display: inline-flex !important;
+        align-items: center !important;
     }
     .download-btn:hover {
-        background: #10b981;
-        color: #fff;
+        background: #10b981 !important;
+        color: #fff !important;
     }
     .chapter-header {
         cursor: pointer;
@@ -49,24 +69,26 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        padding: 15px 20px;
-        background: rgba(255, 255, 255, 0.02);
-        border: none;
-        color: #fff;
+        padding: 15px 20px !important;
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 0 !important;
+        color: #fff !important;
         font-weight: bold;
         font-size: 1rem;
         transition: background 0.2s;
     }
     .chapter-header:hover {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.05) !important;
     }
     [dir="rtl"] .sidebar {
-        border-right: none;
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        border-right: none !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
     [dir="rtl"] .download-btn {
-        margin-right: 10px;
-        margin-left: 0;
+        margin-right: 10px !important;
+        margin-left: 0 !important;
     }
     /* Rating Star selection styling */
     .star-select {
@@ -80,9 +102,8 @@
     }
 </style>
 
-<div class="container" style="padding-top: 30px; padding-bottom: 60px;">
   @if(session('success'))
-    <div class="alert-error" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border-color: rgba(16, 185, 129, 0.3); margin-bottom: 20px;">
+    <div class="alert-error" id="success-alert" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border-color: rgba(16, 185, 129, 0.3); margin-bottom: 20px;">
         {{ session('success') }}
     </div>
   @endif
@@ -150,12 +171,15 @@
         <p class="lesson-desc" id="active-lesson-desc"></p>
         
         <!-- Active lesson dynamic attachment card -->
-        <div id="active-lesson-attachment-box" style="margin-top: 20px; display: none;">
-            <h4 style="color: #fff; margin-bottom: 8px;">
-                <i class="fa-solid fa-paperclip" style="color: #f59e0b;"></i> 
+        <div id="active-lesson-attachment-box" style="margin-top: 25px; display: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: all 0.3s ease;">
+            <h4 style="margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-paperclip" style="color: #f59e0b; font-size: 1.2rem;"></i> 
                 {{ app()->getLocale() === 'ar' ? 'مرفقات الدرس وملفات العمل:' : 'Lesson Materials & Work Files:' }}
             </h4>
-            <a id="active-lesson-attachment-link" class="buy-btn" href="" download style="background: #10b981; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 20px; font-size: 0.9rem; font-weight: 600;">
+            <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 16px; line-height: 1.4;">
+                {{ app()->getLocale() === 'ar' ? 'قم بتحميل المرفقات وملفات العمل المخصصة لهذا الدرس للتطبيق بشكل عملي.' : 'Download the attachments and resource files included in this lesson to practice.' }}
+            </p>
+            <a id="active-lesson-attachment-link" href="" download style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 12px 24px; font-size: 0.9rem; font-weight: 600; color: #fff; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); border: none; cursor: pointer; width: 100%; box-sizing: border-box; text-align: center;">
                 <i class="fa-solid fa-download"></i> 
                 {{ app()->getLocale() === 'ar' ? 'تحميل ملفات العمل (.ZIP / .PDF)' : 'Download Work Files' }}
             </a>
@@ -163,7 +187,6 @@
       </div>
     </div>
   </div>
-</div>
 
 <!-- ==========================================
      COURSE RATING & REVIEW POPUP
@@ -206,8 +229,8 @@
             @foreach($chapter->lessons->sortBy('sort_order') as $lesson)
                 {
                     id: {{ $lesson->id }},
-                    title: "{{ addslashes($lesson->title) }}",
-                    description: "{{ addslashes(str_replace(["\r", "\n"], " ", $lesson->description)) }}",
+                    title: {!! json_encode($lesson->title) !!},
+                    description: {!! json_encode($lesson->description) !!},
                     video_url: "{{ asset('storage/' . $lesson->video_path) }}",
                     attachment_url: "{{ $lesson->attachment_path ? asset('storage/' . $lesson->attachment_path) : '' }}"
                 },
@@ -222,7 +245,7 @@
         if (lessonsList.length > 0) {
             loadLessonByIndex(0);
         } else {
-            document.getElementById('active-lesson-title').innerText = "{{ app()->getLocale() === 'ar' ? 'لا توجد دروس مرفوعة بعد.' : 'No lectures uploaded yet.' }}";
+            document.getElementById('active-lesson-title').innerText = "{{ app()->getLocale() === 'ar' ? 'لا توجد دروس مرفوعة بعد.' : 'No lessons uploaded yet.' }}";
         }
     });
 
@@ -241,7 +264,7 @@
 
         // 2. Update Details
         document.getElementById('active-lesson-title').innerText = lesson.title;
-        document.getElementById('active-lesson-desc').innerText = lesson.description;
+        document.getElementById('active-lesson-desc').innerHTML = lesson.description;
 
         // 3. Update active sidebar item
         document.querySelectorAll('.lessons li').forEach(li => li.classList.remove('active-lesson'));
@@ -284,9 +307,15 @@
 
     function toggleClassroomChapter(id) {
         let chap = document.getElementById('chapter-classroom-' + id);
-        if (chap.classList.contains('open')) {
-            chap.classList.remove('open');
-        } else {
+        let isOpen = chap.classList.contains('open');
+        
+        // Close all chapters first
+        document.querySelectorAll('.chapter').forEach(ch => {
+            ch.classList.remove('open');
+        });
+        
+        // Open the clicked chapter if it was closed
+        if (!isOpen) {
             chap.classList.add('open');
         }
     }
@@ -312,5 +341,19 @@
             }
         }
     }
+
+    // Auto-hide success alert after 3 seconds
+    document.addEventListener('DOMContentLoaded', () => {
+        const successAlert = document.getElementById('success-alert');
+        if (successAlert) {
+            setTimeout(() => {
+                successAlert.style.transition = 'opacity 0.5s ease';
+                successAlert.style.opacity = '0';
+                setTimeout(() => {
+                    successAlert.remove();
+                }, 500);
+            }, 3000);
+        }
+    });
 </script>
 @endsection

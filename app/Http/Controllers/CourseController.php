@@ -64,10 +64,14 @@ class CourseController extends Controller
     {
         $enrollments = Enrollment::where('user_id', auth()->id())
             ->where('status', 'active')
-            ->with('course')
+            ->with(['course', 'addon', 'threeDObject'])
             ->get();
 
-        return view('my-courses', compact('enrollments'));
+        $coursesEnrollments = $enrollments->whereNotNull('course_id');
+        $addonsEnrollments = $enrollments->whereNotNull('addon_id');
+        $objectsEnrollments = $enrollments->whereNotNull('three_d_object_id');
+
+        return view('my-courses', compact('coursesEnrollments', 'addonsEnrollments', 'objectsEnrollments'));
     }
 
     /**
@@ -80,18 +84,29 @@ class CourseController extends Controller
             'comment' => 'nullable|string|max:1000',
         ]);
 
-        // Create a new pending review
+        $course = Course::findOrFail($course_id);
+
+        // Create a new approved review
         Review::create([
             'user_id' => auth()->id(),
-            'course_id' => $course_id,
+            'course_id' => $course->id,
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'is_approved' => false, // Requires admin approval
+            'is_approved' => true, // Approved automatically by default
+        ]);
+
+        // Recalculate course average rating
+        $avgRating = Review::where('course_id', $course->id)
+            ->where('is_approved', true)
+            ->avg('rating');
+
+        $course->update([
+            'rating' => $avgRating ?: 5.0
         ]);
 
         $message = app()->getLocale() === 'ar'
-            ? 'تم تقديم تقييمك بنجاح وسوف يظهر بعد مراجعة الإدارة.'
-            : 'Your review has been submitted successfully and will appear after admin approval.';
+            ? 'تمت إضافة التقييم بنجاح!'
+            : 'Review added successfully!';
 
         return back()->with('success', $message);
     }

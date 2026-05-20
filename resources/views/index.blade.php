@@ -116,7 +116,11 @@
                 </span>
                 <span class="meta-item">
                   <i class="fa-regular fa-circle-play"></i>
-                  {{ $course->chapters->flatMap->lessons->count() }} {{ app()->getLocale() === 'ar' ? 'درس' : 'Lectures' }}
+                  {{ $course->lessons->count() }} {{ app()->getLocale() === 'ar' ? 'درس' : 'Lessons' }}
+                </span>
+                <span class="meta-item">
+                  <i class="fa-solid fa-user-graduate"></i>
+                  {{ number_format(($course->students_count ?? 1500) + $course->enrollments()->where('status', 'active')->count()) }}
                 </span>
               </div>
 
@@ -148,19 +152,22 @@
           @forelse($addons as $addon)
             <div class="course-card">
               <img class="course-img" src="{{ asset('storage/' . $addon->thumbnail) }}" onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Addon Thumbnail"/>
-              <div class="course-title" style="margin-top: 15px;">{{ $addon->title }}</div>
               
-              <div class="price" style="margin: 20px 0;">
+              <div class="course-title" style="margin-top: 15px;">{{ $addon->title }}</div>
+              <div class="course-slogan">{{ $addon->description_header }}</div>
+              
+              <div class="price">
                 @if($addon->discount_price)
                   {{ number_format($addon->discount_price) }} EGP
                   <span class="old-price">{{ number_format($addon->price) }}</span>
+                  <span class="dis-percentage">-{{ round((($addon->price - $addon->discount_price) / $addon->price) * 100) }}%</span>
                 @else
                   {{ number_format($addon->price) }} EGP
                 @endif
               </div>
 
-              <a href="{{ $addon->purchase_url }}" target="_blank" class="buy-btn" style="background:#10b981;">
-                {{ app()->getLocale() === 'ar' ? 'تحميل من Gumroad' : 'Get on Gumroad' }}
+              <a href="{{ $addon->slug ? route('addon.show', $addon->slug) : '#' }}" class="buy-btn">
+                {{ app()->getLocale() === 'ar' ? 'عرض الملحق' : 'View Addon' }}
               </a>
             </div>
           @empty
@@ -177,19 +184,22 @@
           @forelse($threeDObjects as $object)
             <div class="course-card">
               <img class="course-img" src="{{ asset('storage/' . $object->thumbnail) }}" onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Object Thumbnail"/>
-              <div class="course-title" style="margin-top: 15px;">{{ $object->title }}</div>
               
-              <div class="price" style="margin: 20px 0;">
+              <div class="course-title" style="margin-top: 15px;">{{ $object->title }}</div>
+              <div class="course-slogan">{{ $object->description_header }}</div>
+              
+              <div class="price">
                 @if($object->discount_price)
                   {{ number_format($object->discount_price) }} EGP
                   <span class="old-price">{{ number_format($object->price) }}</span>
+                  <span class="dis-percentage">-{{ round((($object->price - $object->discount_price) / $object->price) * 100) }}%</span>
                 @else
                   {{ number_format($object->price) }} EGP
                 @endif
               </div>
 
-              <a href="{{ $object->purchase_url }}" target="_blank" class="buy-btn" style="background:#8b5cf6;">
-                {{ app()->getLocale() === 'ar' ? 'تحميل مجسم 3D' : 'Get 3D Model' }}
+              <a href="{{ $object->slug ? route('object.show', $object->slug) : '#' }}" class="buy-btn">
+                {{ app()->getLocale() === 'ar' ? 'عرض المجسم' : 'View Object' }}
               </a>
             </div>
           @empty
@@ -203,11 +213,9 @@
 
     <!-- BIO SECTION -->
     <div id="bio-section" class="bio-section" style="display:none;">
-      <h3>{{ app()->getLocale() === 'ar' ? 'نبذة عن أكاديمية Animfy' : 'About Animfy Studio' }}</h3>
+      <h3>{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('bio_title_ar', 'نبذة عن أكاديمية Animfy') : \App\Models\Setting::get('bio_title_en', 'About Animfy Studio') }}</h3>
       <p>
-        {{ app()->getLocale() === 'ar' 
-           ? 'في أكاديمية Animfy، ندمج بين الفن والتكنولوجيا لتبسيط مجالات الرسوم المتحركة ثلاثية الأبعاد (3D Animation)، المونتاج، والذكاء الاصطناعي وجعلها ممتعة وعملية. نؤمن بالتعليم القائم على التطبيق والمشاريع الواقعية لتمكين الطلاب من بناء محفظة أعمال (Portfolio) مميزة تؤهلهم لسوق العمل مباشرة.' 
-           : 'At Animfy, we bring creativity and technology together to make learning 3D animation, video editing, and AI tools simple, practical, and fun. Every course we design is project-based, giving you real-world experience and creative confidence.' }}
+        {!! nl2br(e(app()->getLocale() === 'ar' ? \App\Models\Setting::get('bio_text_ar', 'في أكاديمية Animfy، ندمج بين الفن والتكنولوجيا لتبسيط مجالات الرسوم المتحركة ثلاثية الأبعاد (3D Animation)، المونتاج، والذكاء الاصطناعي وجعلها ممتعة وعملية. نؤمن بالتعليم القائم على التطبيق والمشاريع الواقعية لتمكين الطلاب من بناء محفظة أعمال (Portfolio) مميزة تؤهلهم لسوق العمل مباشرة.') : \App\Models\Setting::get('bio_text_en', 'At Animfy, we bring creativity and technology together to make learning 3D animation, video editing, and AI tools simple, practical, and fun. Every course we design is project-based, giving you real-world experience and creative confidence.'))) !!}
       </p>
     </div>
 

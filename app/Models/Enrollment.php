@@ -17,6 +17,8 @@ class Enrollment extends Model
     protected $fillable = [
         'user_id',
         'course_id',
+        'addon_id',
+        'three_d_object_id',
         'price_paid',
         'status',
     ];
@@ -35,6 +37,22 @@ class Enrollment extends Model
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    /**
+     * Addon relationship.
+     */
+    public function addon()
+    {
+        return $this->belongsTo(Addon::class);
+    }
+
+    /**
+     * ThreeDObject relationship.
+     */
+    public function threeDObject()
+    {
+        return $this->belongsTo(ThreeDObject::class);
     }
 
     /**

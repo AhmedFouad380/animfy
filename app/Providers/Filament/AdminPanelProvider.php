@@ -28,10 +28,15 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->authGuard('admin')
+            ->brandName('Animfy')
+            ->brandLogo(fn () => \App\Models\Setting::get('site_logo') 
+                ? asset('storage/' . \App\Models\Setting::get('site_logo')) 
+                : asset('imgs/logo/Animfy Logo.png')
+            )
+            ->brandLogoHeight('2.5rem')
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->plugin(\Filament\SpatieLaravelTranslatablePlugin::make()->defaultLocales(['ar', 'en']))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -42,6 +47,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
             ])
             ->middleware([
+                \App\Http\Middleware\ForceEnglishLocale::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,

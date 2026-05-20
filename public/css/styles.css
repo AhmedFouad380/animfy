@@ -150,6 +150,10 @@ body{
     backdrop-filter:blur(5px);
 }
 
+.popup-overlay.show{
+    display:flex;
+}
+
 .popup-box{
     width:400px;
 
@@ -207,6 +211,20 @@ body{
     cursor:pointer;
 
     color:#777;
+}
+
+[dir="rtl"] .popup-box {
+    text-align: right;
+}
+
+[dir="rtl"] .popup-box input {
+    text-align: right;
+    direction: rtl;
+}
+
+[dir="rtl"] .close-popup {
+    right: auto;
+    left: 18px;
 }
 
 /* TITLE */

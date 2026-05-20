@@ -23,6 +23,8 @@ Route::get('/lang/{locale}', [HomeController::class, 'setLocale'])->name('locale
 
 // Course Details (Public)
 Route::get('/course/{slug}', [CourseController::class, 'show'])->name('course.show');
+Route::get('/addon/{slug}', [HomeController::class, 'showAddon'])->name('addon.show');
+Route::get('/object/{slug}', [HomeController::class, 'showObject'])->name('object.show');
 
 // Student Auth
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -37,6 +39,12 @@ Route::middleware('auth')->group(function () {
     
     // Paymob Checkout Live Route
     Route::get('/checkout/{course_id}', [PaymentController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout-addon/{addon_id}', [PaymentController::class, 'checkoutAddon'])->name('checkout.addon');
+    Route::get('/checkout-object/{object_id}', [PaymentController::class, 'checkoutObject'])->name('checkout.object');
+
+    // Secure downloads
+    Route::get('/download-addon/{addon_id}', [HomeController::class, 'downloadAddon'])->name('download.addon');
+    Route::get('/download-object/{object_id}', [HomeController::class, 'downloadObject'])->name('download.object');
 });
 
 // Paymob public callback and background webhook routes (disable CSRF for webhook!)

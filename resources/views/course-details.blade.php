@@ -62,11 +62,15 @@
           </div>
           <div class="meta-item">
             <i class="fa-regular fa-clock"></i>
-            {{ $course->duration_hours }} {{ app()->getLocale() === 'ar' ? 'ساعة' : 'Hours' }}
+            {{ $course->duration_hours }}+ {{ app()->getLocale() === 'ar' ? 'ساعة' : 'Hours' }}
           </div>
           <div class="meta-item">
             <i class="fa-solid fa-circle-play"></i>
-            {{ $course->chapters->flatMap->lessons->count() }} {{ app()->getLocale() === 'ar' ? 'درس' : 'Lessons' }}
+            {{ $course->lessons->count() }} {{ app()->getLocale() === 'ar' ? 'درس' : 'Lessons' }}
+          </div>
+          <div class="meta-item">
+            <i class="fa-solid fa-user-graduate"></i>
+            {{ number_format(($course->students_count ?? 1500) + $course->enrollments()->where('status', 'active')->count()) }} {{ app()->getLocale() === 'ar' ? 'طالب مشترك' : 'Enrollments' }}
           </div>
         </div>
 
@@ -82,11 +86,21 @@
             </div>
         </div>
 
-        @if($course->video_trailer_url)
-            <h2 class="overview-text">{{ app()->getLocale() === 'ar' ? 'شاهد مقدمة الدورة' : 'Watch Course Overview' }}</h2>
+        @if($course->video_overview_url)
+            @php
+                $embedUrl = '';
+                if (str_contains($course->video_overview_url, 'embed')) {
+                    $embedUrl = $course->video_overview_url;
+                } elseif (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^\"&?/ ]{11})%i', $course->video_overview_url, $match)) {
+                    $embedUrl = "https://www.youtube.com/embed/" . $match[1];
+                } else {
+                    $embedUrl = $course->video_overview_url;
+                }
+            @endphp
+            <h2 class="overview-text" style="margin-top: 30px; margin-bottom: 15px;">{{ app()->getLocale() === 'ar' ? 'شاهد مقدمة الدورة' : 'Watch Course Overview' }}</h2>
             <div class="overview-video">
                 <iframe
-                    src="{{ str_contains($course->video_trailer_url, 'youtube.com/embed') ? $course->video_trailer_url : 'https://www.youtube.com/embed/' . basename($course->video_trailer_url) }}"
+                    src="{{ $embedUrl }}"
                     title="Course Preview"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -98,7 +112,7 @@
 
         <p id="description-header">{{ $course->slogan }}</p>
         <div class="description-text" style="color: #bbb; line-height: 1.8; font-size: 0.95rem;">
-            {!! nl2br(e($course->description)) !!}
+            {!! $course->description !!}
         </div>
       </div>
 
@@ -134,7 +148,7 @@
         <h2>{{ app()->getLocale() === 'ar' ? 'محتوى الدورة التدريبية' : 'Course Curriculum' }}</h2>
 
         @forelse($course->chapters as $index => $chapter)
-            <div class="chapter {{ $index === 0 ? 'chapter-open' : '' }}" id="chapter-{{ $chapter->id }}">
+            <div class="chapter {{ $index === 0 ? 'active' : '' }}" id="chapter-{{ $chapter->id }}">
                 <button class="chapter-header" onclick="toggleChapter({{ $chapter->id }})">
                     {{ $chapter->title }}
                     <i class="fa-solid fa-chevron-down"></i>
@@ -164,7 +178,7 @@
                             </div>
                         </div>
                     @empty
-                        <p style="color: #bbb; padding: 10px 20px;">{{ app()->getLocale() === 'ar' ? 'الدروس ترفع قريباً.' : 'No lectures in this chapter yet.' }}</p>
+                        <p style="color: #bbb; padding: 10px 20px;">{{ app()->getLocale() === 'ar' ? 'الدروس ترفع قريباً.' : 'No lessons in this chapter yet.' }}</p>
                     @endforelse
                 </div>
             </div>
@@ -185,7 +199,7 @@
             <div class="review">
               <div class="review-header">
                 <div class="review-user">
-                  <img src="{{ asset('imgs/users-imgs/user.jpg') }}" alt="User Profile Image">
+                  <img src="https://ui-avatars.com/api/?name={{ urlencode($review->user->name) }}&color=da6319&background=FFF0E6&bold=true" alt="User Profile Image">
                   <div>
                     <h4>{{ $review->user->name }}</h4>
                     <div class="rating">
@@ -252,9 +266,15 @@
           </div>
 
           @auth
-            <a href="{{ route('checkout', $course->id) }}" class="buy-btn" style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
-                {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
-            </a>
+            @if(auth()->user()->enrollments()->where('course_id', $course->id)->where('status', 'active')->exists())
+              <a href="{{ route('classroom', $course->id) }}" class="buy-btn" style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
+                  {{ app()->getLocale() === 'ar' ? 'مشاهدة الكورس' : 'View Course' }}
+              </a>
+            @else
+              <a href="{{ route('checkout', $course->id) }}" class="buy-btn" style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
+                  {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
+              </a>
+            @endif
           @else
             <button class="buy-btn" onclick="openPopup('login-popup')">
                 {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
@@ -269,11 +289,33 @@
 <script>
     function toggleChapter(id) {
         let chap = document.getElementById('chapter-' + id);
-        if (chap.classList.contains('chapter-open')) {
-            chap.classList.remove('chapter-open');
-        } else {
-            chap.classList.add('chapter-open');
+        let content = chap.querySelector('.chapter-content');
+        
+        let isOpen = chap.classList.contains('active');
+        
+        // Close all chapters first (accordion style)
+        document.querySelectorAll('.chapter').forEach(ch => {
+            ch.classList.remove('active');
+            let chContent = ch.querySelector('.chapter-content');
+            if (chContent) chContent.style.maxHeight = null;
+        });
+        
+        // Open the clicked one if it was closed
+        if (!isOpen) {
+            chap.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + "px";
         }
     }
+
+    // Initialize the default open chapter height on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        let firstActiveChapter = document.querySelector('.chapter.active');
+        if (firstActiveChapter) {
+            let content = firstActiveChapter.querySelector('.chapter-content');
+            if (content) {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+    });
 </script>
 @endsection

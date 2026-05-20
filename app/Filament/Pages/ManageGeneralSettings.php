@@ -42,6 +42,10 @@ class ManageGeneralSettings extends Page implements HasForms
             'social_instagram' => Setting::get('social_instagram', 'https://www.instagram.com/animfy.studio/'),
             'social_youtube' => Setting::get('social_youtube', 'https://www.youtube.com/@animfy.studio'),
             'social_tiktok' => Setting::get('social_tiktok', 'https://www.tiktok.com/@animfy.studio'),
+            'bio_title_ar' => Setting::get('bio_title_ar', 'نبذة عن أكاديمية Animfy'),
+            'bio_title_en' => Setting::get('bio_title_en', 'About Animfy Studio'),
+            'bio_text_ar' => Setting::get('bio_text_ar', 'في أكاديمية Animfy، ندمج بين الفن والتكنولوجيا لتبسيط مجالات الرسوم المتحركة ثلاثية الأبعاد (3D Animation)، المونتاج، والذكاء الاصطناعي وجعلها ممتعة وعملية. نؤمن بالتعليم القائم على التطبيق والمشاريع الواقعية لتمكين الطلاب من بناء محفظة أعمال (Portfolio) مميزة تؤهلهم لسوق العمل مباشرة.'),
+            'bio_text_en' => Setting::get('bio_text_en', 'At Animfy, we bring creativity and technology together to make learning 3D animation, video editing, and AI tools simple, practical, and fun. Every course we design is project-based, giving you real-world experience and creative confidence.'),
             'meta_title_ar' => Setting::get('meta_title_ar', 'أكاديمية أنيمفاي - تعليم ثلاثي الأبعاد والأنيميشن'),
             'meta_title_en' => Setting::get('meta_title_en', 'Animfy Academy - Learn 3D & Animation'),
             'meta_description_ar' => Setting::get('meta_description_ar', 'منصة احترافية لتعلم الرسوم المتحركة ثلاثية الأبعاد، المونتاج، والذكاء الاصطناعي من الصفر وحتى الاحتراف.'),
@@ -69,6 +73,26 @@ class ManageGeneralSettings extends Page implements HasForms
                             ->directory('settings')
                             ->maxSize(2048)
                             ->columnSpanFull(),
+                    ])
+                    ->columns(2),
+
+                Section::make('Studio Bio Information')
+                    ->description('Set the dynamic description/bio text and titles displayed in the studio profile section.')
+                    ->schema([
+                        TextInput::make('bio_title_ar')
+                            ->label('Bio Title (Arabic)')
+                            ->required(),
+                        TextInput::make('bio_title_en')
+                            ->label('Bio Title (English)')
+                            ->required(),
+                        Textarea::make('bio_text_ar')
+                            ->label('Bio Text (Arabic)')
+                            ->rows(4)
+                            ->required(),
+                        Textarea::make('bio_text_en')
+                            ->label('Bio Text (English)')
+                            ->rows(4)
+                            ->required(),
                     ])
                     ->columns(2),
 

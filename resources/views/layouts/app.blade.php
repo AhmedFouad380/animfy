@@ -77,6 +77,102 @@
         .error-border {
             border-color: #f43f5e !important;
         }
+
+        /* User Dropdown Premium Styling */
+        .user-dropdown {
+            position: relative;
+        }
+        .user-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #da6319;
+            border-radius: 50px;
+            background-color: #fef4f1;
+            color: #555;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .user-trigger:hover, .user-trigger.active {
+            background-color: #da6319;
+            color: #fff;
+            border-color: #da6319;
+        }
+        .user-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(218, 99, 25, 0.2);
+        }
+        .user-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            width: 220px;
+            background: #fff8f6;
+            border: 1px solid #da6319;
+            border-radius: 18px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            padding: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 10000;
+            animation: dropdownFadeIn 0.2s ease;
+        }
+        .dropdown-menu.active {
+            display: flex;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .dropdown-item:hover {
+            background-color: rgba(218, 99, 25, 0.08);
+            color: #da6319;
+        }
+        .dropdown-item i {
+            font-size: 1.05rem;
+        }
+        .dropdown-item.logout-item {
+            color: #ef4444;
+        }
+        .dropdown-item.logout-item:hover {
+            background-color: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+        }
+        
+        /* Adjust dropdown positioning for RTL */
+        [dir="rtl"] .dropdown-menu {
+            right: auto;
+            left: 0;
+        }
+
+        @keyframes dropdownFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -106,15 +202,27 @@
           @endif -->
 
           @auth
-            <a href="{{ route('my-courses') }}" class="dashboard-link">
-              <i class="fa-solid fa-graduation-cap"></i> {{ app()->getLocale() === 'ar' ? 'كورساتي' : 'My Courses' }}
-            </a>
-            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-              @csrf
-              <button type="submit" class="logout-btn-header">
-                {{ app()->getLocale() === 'ar' ? 'خروج' : 'Logout' }}
-              </button>
-            </form>
+            <!-- Dropdown User Menu -->
+            <div class="user-dropdown">
+              <div class="user-trigger" onclick="toggleUserDropdown(event)">
+                <img class="user-img" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&color=da6319&background=FFF0E6&bold=true" alt="User Profile Image">
+                <span class="user-name">{{ auth()->user()->name }}</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
+              <div class="dropdown-menu" id="userDropdownMenu">
+                <a href="{{ route('my-courses') }}" class="dropdown-item">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                  <span>{{ app()->getLocale() === 'ar' ? 'مشترياتي واشتراكاتي' : 'My Purchases' }}</span>
+                </a>
+                <a href="#" class="dropdown-item logout-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                  <span>{{ app()->getLocale() === 'ar' ? 'تسجيل الخروج' : 'Logout' }}</span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
+              </div>
+            </div>
           @else
             <button class="reg-btn" onclick="openPopup('register-popup')">
               {{ app()->getLocale() === 'ar' ? 'تسجيل جديد' : 'Register' }}
@@ -154,7 +262,7 @@
             <input type="email" name="email" value="{{ old('email') }}" placeholder="{{ app()->getLocale() === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }}" required>
             <input type="password" name="password" placeholder="{{ app()->getLocale() === 'ar' ? 'كلمة المرور' : 'Password' }}" required>
 
-            <button type="submit" class="popup-btn">
+            <button type="submit" class="buy-btn">
                 {{ app()->getLocale() === 'ar' ? 'دخول' : 'Login' }}
             </button>
         </form>
@@ -176,7 +284,7 @@
             <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="{{ app()->getLocale() === 'ar' ? 'رقم الهاتف' : 'Phone Number' }}" required>
             <input type="password" name="password" placeholder="{{ app()->getLocale() === 'ar' ? 'كلمة المرور (٦ أحرف على الأقل)' : 'Password (min 6 characters)' }}" required>
 
-            <button type="submit" class="popup-btn">
+            <button type="submit" class="buy-btn">
                 {{ app()->getLocale() === 'ar' ? 'تسجيل' : 'Register' }}
             </button>
         </form>
@@ -216,6 +324,38 @@
               document.getElementById(id).style.display = 'none';
           }, 300);
       }
+
+      function toggleUserDropdown(event) {
+          event.stopPropagation();
+          const menu = document.getElementById('userDropdownMenu');
+          const trigger = event.currentTarget;
+          menu.classList.toggle('active');
+          trigger.classList.toggle('active');
+          
+          const icon = trigger.querySelector('i');
+          if (trigger.classList.contains('active')) {
+              icon.className = 'fa-solid fa-chevron-up';
+          } else {
+              icon.className = 'fa-solid fa-chevron-down';
+          }
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+          const menu = document.getElementById('userDropdownMenu');
+          const trigger = document.querySelector('.user-trigger');
+          if (menu && menu.classList.contains('active')) {
+              const isClickInside = menu.contains(event.target) || (trigger && trigger.contains(event.target));
+              if (!isClickInside) {
+                  menu.classList.remove('active');
+                  trigger.classList.remove('active');
+                  const icon = trigger.querySelector('i');
+                  if (icon) {
+                      icon.className = 'fa-solid fa-chevron-down';
+                  }
+              }
+          }
+      });
   </script>
 </body>
 </html>

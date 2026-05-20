@@ -17,6 +17,8 @@ class PaymentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $navigationLabel = 'Payments';
     protected static ?string $modelLabel = 'Payment';
     protected static ?string $pluralModelLabel = 'Payments';

@@ -94,6 +94,148 @@ class PaymentController extends Controller
     }
 
     /**
+     * Start Paymob Checkout process for an addon.
+     */
+    public function checkoutAddon($addon_id)
+    {
+        $addon = \App\Models\Addon::findOrFail($addon_id);
+
+        // 1. Check if student is already enrolled actively
+        $activeEnrollment = Enrollment::where('user_id', auth()->id())
+            ->where('addon_id', $addon->id)
+            ->where('status', 'active')
+            ->exists();
+
+        if ($activeEnrollment) {
+            $message = app()->getLocale() === 'ar'
+                ? 'أنت مشترك بالفعل في هذا الملحق.'
+                : 'You have already purchased this addon.';
+            return redirect()->route('addon.show', $addon->slug)->with('success', $message);
+        }
+
+        // 2. Find or create a pending enrollment
+        $enrollment = Enrollment::firstOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'addon_id' => $addon->id
+            ],
+            [
+                'price_paid' => $addon->discount_price ?? $addon->price,
+                'status' => 'pending'
+            ]
+        );
+
+        if ($enrollment->status === 'cancelled') {
+            $enrollment->update(['status' => 'pending']);
+        }
+
+        // 3. Initiate Paymob Integration
+        $authToken = $this->paymob->getAuthToken();
+        if (!$authToken) {
+            return $this->handleAssetCheckoutFailure($addon, 'addon');
+        }
+
+        $price = $addon->discount_price ?? $addon->price;
+        $merchantOrderId = $enrollment->id . '_' . time();
+        $paymobOrderId = $this->paymob->createOrder(
+            $authToken, 
+            $price, 
+            $addon->title, 
+            $merchantOrderId
+        );
+
+        if (!$paymobOrderId) {
+            return $this->handleAssetCheckoutFailure($addon, 'addon');
+        }
+
+        $paymentToken = $this->paymob->getPaymentKey(
+            $authToken, 
+            $paymobOrderId, 
+            $price, 
+            auth()->user()
+        );
+
+        if (!$paymentToken) {
+            return $this->handleAssetCheckoutFailure($addon, 'addon');
+        }
+
+        $iframeUrl = $this->paymob->getPaymentUrl($paymentToken);
+
+        return redirect()->away($iframeUrl);
+    }
+
+    /**
+     * Start Paymob Checkout process for a 3D Object.
+     */
+    public function checkoutObject($object_id)
+    {
+        $object = \App\Models\ThreeDObject::findOrFail($object_id);
+
+        // 1. Check if student is already enrolled actively
+        $activeEnrollment = Enrollment::where('user_id', auth()->id())
+            ->where('three_d_object_id', $object->id)
+            ->where('status', 'active')
+            ->exists();
+
+        if ($activeEnrollment) {
+            $message = app()->getLocale() === 'ar'
+                ? 'أنت مشترك بالفعل في هذا المجسم.'
+                : 'You have already purchased this 3D object.';
+            return redirect()->route('object.show', $object->slug)->with('success', $message);
+        }
+
+        // 2. Find or create a pending enrollment
+        $enrollment = Enrollment::firstOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'three_d_object_id' => $object->id
+            ],
+            [
+                'price_paid' => $object->discount_price ?? $object->price,
+                'status' => 'pending'
+            ]
+        );
+
+        if ($enrollment->status === 'cancelled') {
+            $enrollment->update(['status' => 'pending']);
+        }
+
+        // 3. Initiate Paymob Integration
+        $authToken = $this->paymob->getAuthToken();
+        if (!$authToken) {
+            return $this->handleAssetCheckoutFailure($object, 'object');
+        }
+
+        $price = $object->discount_price ?? $object->price;
+        $merchantOrderId = $enrollment->id . '_' . time();
+        $paymobOrderId = $this->paymob->createOrder(
+            $authToken, 
+            $price, 
+            $object->title, 
+            $merchantOrderId
+        );
+
+        if (!$paymobOrderId) {
+            return $this->handleAssetCheckoutFailure($object, 'object');
+        }
+
+        $paymentToken = $this->paymob->getPaymentKey(
+            $authToken, 
+            $paymobOrderId, 
+            $price, 
+            auth()->user()
+        );
+
+        if (!$paymentToken) {
+            return $this->handleAssetCheckoutFailure($object, 'object');
+        }
+
+        $iframeUrl = $this->paymob->getPaymentUrl($paymentToken);
+
+        return redirect()->away($iframeUrl);
+    }
+
+    /**
      * Handle Paymob callback redirect (student returns here via GET).
      */
     public function callback(Request $request)
@@ -116,8 +258,6 @@ class PaymentController extends Controller
             return redirect()->route('home')->with('error', 'Enrollment details not found.');
         }
 
-        $course = $enrollment->course;
-
         if ($success === 'true') {
             // Activate Enrollment
             $enrollment->update(['status' => 'active']);
@@ -134,11 +274,22 @@ class PaymentController extends Controller
                 ]
             );
 
-            $message = app()->getLocale() === 'ar'
-                ? 'تهانينا! تم تفعيل اشتراكك بالدورة بنجاح. يمكنك بدء المشاهدة الآن!'
-                : 'Congratulations! Your enrollment is now active. Start learning now!';
-
-            return redirect()->route('classroom', $course->id)->with('success', $message);
+            if ($enrollment->course_id) {
+                $message = app()->getLocale() === 'ar'
+                    ? 'تهانينا! تم تفعيل اشتراكك بالدورة بنجاح. يمكنك بدء المشاهدة الآن!'
+                    : 'Congratulations! Your enrollment is now active. Start learning now!';
+                return redirect()->route('classroom', $enrollment->course_id)->with('success', $message);
+            } elseif ($enrollment->addon_id) {
+                $message = app()->getLocale() === 'ar'
+                    ? 'تهانينا! تم شراء الملحق بنجاح. يمكنك تحميله الآن!'
+                    : 'Congratulations! Your addon purchase is now active. Download it now!';
+                return redirect()->route('my-courses', ['tab' => 'addons'])->with('success', $message);
+            } else {
+                $message = app()->getLocale() === 'ar'
+                    ? 'تهانينا! تم شراء المجسم بنجاح. يمكنك تحميله الآن!'
+                    : 'Congratulations! Your 3D object purchase is now active. Download it now!';
+                return redirect()->route('my-courses', ['tab' => 'objects'])->with('success', $message);
+            }
         } else {
             // Save failed Payment
             Payment::updateOrCreate(
@@ -156,7 +307,13 @@ class PaymentController extends Controller
                 ? 'عذراً، فشلت عملية الدفع. يرجى التحقق من بيانات بطاقتك والمحاولة مرة أخرى.'
                 : 'Sorry, the payment process failed. Please check your card and try again.';
 
-            return redirect()->route('course.show', $course->slug)->with('error', $message);
+            if ($enrollment->course_id) {
+                return redirect()->route('course.show', $enrollment->course->slug)->with('error', $message);
+            } elseif ($enrollment->addon_id) {
+                return redirect()->route('addon.show', $enrollment->addon->slug)->with('error', $message);
+            } else {
+                return redirect()->route('object.show', $enrollment->threeDObject->slug)->with('error', $message);
+            }
         }
     }
 
@@ -223,5 +380,20 @@ class PaymentController extends Controller
             : 'Sorry, we could not connect to Paymob payment gateway. Please contact support.' . $errorDetails;
 
         return redirect()->route('course.show', $course->slug)->with('error', $message);
+    }
+
+    /**
+     * Helper to return payment connection error messages for assets (addons/objects)
+     */
+    private function handleAssetCheckoutFailure($model, $type)
+    {
+        $errorDetails = $this->paymob->lastError ? ' Details: [' . $this->paymob->lastError . ']' : '';
+
+        $message = app()->getLocale() === 'ar'
+            ? 'عذراً، فشل الاتصال ببوابة الدفع Paymob. يرجى التواصل مع الدعم الفني.' . ($errorDetails ? ' التفاصيل: ' . $errorDetails : '')
+            : 'Sorry, we could not connect to Paymob payment gateway. Please contact support.' . $errorDetails;
+
+        $route = $type === 'addon' ? 'addon.show' : 'object.show';
+        return redirect()->route($route, $model->slug)->with('error', $message);
     }
 }

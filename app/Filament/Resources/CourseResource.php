@@ -7,13 +7,11 @@ use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class CourseResource extends Resource
 {
-    use Translatable;
 
     protected static ?string $model = Course::class;
 
@@ -71,6 +69,11 @@ class CourseResource extends Resource
                             ->numeric()
                             ->default(0)
                             ->suffix('Hours'),
+                        Forms\Components\TextInput::make('students_count')
+                            ->required()
+                            ->numeric()
+                            ->default(1500)
+                            ->label('Students Count'),
                         Forms\Components\TextInput::make('rating')
                             ->required()
                             ->numeric()
@@ -124,6 +127,10 @@ class CourseResource extends Resource
                     ->numeric()
                     ->suffix(' hrs')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('students_count')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('rating')
                     ->numeric()
                     ->sortable(),

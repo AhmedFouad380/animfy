@@ -3,19 +3,12 @@
 namespace App\Filament\Resources\AddonResource\Pages;
 
 use App\Filament\Resources\AddonResource;
-use Filament\Actions;
+use App\Filament\Traits\TranslatableCreatePage;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateAddon extends CreateRecord
 {
-    use CreateRecord\Concerns\Translatable;
+    use TranslatableCreatePage;
 
     protected static string $resource = AddonResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-        ];
-    }
 }

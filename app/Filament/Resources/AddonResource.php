@@ -7,13 +7,11 @@ use App\Models\Addon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class AddonResource extends Resource
 {
-    use Translatable;
 
     protected static ?string $model = Addon::class;
 
@@ -28,15 +26,35 @@ class AddonResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Addon Details')
+                Forms\Components\Section::make('Basic Information')
                     ->schema([
                         Forms\Components\TextInput::make('title')
                             ->required()
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => 
+                                $operation === 'create' ? $set('slug', \Illuminate\Support\Str::slug($state)) : null),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->unique(Addon::class, 'slug', ignoreRecord: true)
                             ->maxLength(255),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Media & Files')
+                    ->schema([
                         Forms\Components\FileUpload::make('thumbnail')
                             ->image()
                             ->directory('addons/thumbnails')
                             ->visibility('public'),
+                        Forms\Components\FileUpload::make('file_path')
+                            ->directory('addons/files')
+                            ->visibility('public')
+                            ->label('Addon File (.ZIP, .RAR, .PDF, etc.)')
+                            ->required(fn (string $operation) => $operation === 'create'),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Pricing & Status')
+                    ->schema([
                         Forms\Components\TextInput::make('price')
                             ->required()
                             ->numeric()
@@ -52,6 +70,15 @@ class AddonResource extends Resource
                         Forms\Components\Toggle::make('is_active')
                             ->default(true),
                     ])->columns(2),
+
+                Forms\Components\Section::make('Descriptions')
+                    ->schema([
+                        Forms\Components\TextInput::make('description_header')
+                            ->placeholder('Brief summary description header')
+                            ->columnSpanFull(),
+                        Forms\Components\RichEditor::make('description')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 

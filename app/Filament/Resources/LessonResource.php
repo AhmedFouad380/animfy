@@ -7,13 +7,11 @@ use App\Models\Lesson;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class LessonResource extends Resource
 {
-    use Translatable;
 
     protected static ?string $model = Lesson::class;
 
@@ -51,7 +49,7 @@ class LessonResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('video_path')
                             ->label('Video File (Supports files up to 3GB)')
-                            ->required()
+                            ->required(fn (string $operation): bool => $operation === 'create')
                             ->directory('lessons/videos')
                             ->visibility('public')
                             ->acceptedFileTypes(['video/mp4', 'video/quicktime', 'video/x-matroska', 'video/x-msvideo'])
@@ -62,10 +60,32 @@ class LessonResource extends Resource
                             ->visibility('public')
                             ->placeholder('Upload course materials (PDF, ZIP, etc.)'),
                         Forms\Components\TextInput::make('duration_minutes')
+                            ->label('Duration (HH:MM:SS)')
+                            ->placeholder('00:00:00')
                             ->required()
-                            ->numeric()
-                            ->default(0)
-                            ->suffix('Minutes'),
+                            ->formatStateUsing(function ($state) {
+                                if (!$state) return '00:00:00';
+                                $totalSeconds = (int) round($state * 60);
+                                $hours = floor($totalSeconds / 3600);
+                                $minutes = floor(($totalSeconds / 60) % 60);
+                                $seconds = $totalSeconds % 60;
+                                return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                            })
+                            ->dehydrateStateUsing(function ($state) {
+                                if (!$state) return 0;
+                                $parts = explode(':', $state);
+                                if (count($parts) === 3) {
+                                    $hours = (int) $parts[0];
+                                    $minutes = (int) $parts[1];
+                                    $seconds = (int) $parts[2];
+                                    return ($hours * 60) + $minutes + ($seconds / 60);
+                                } elseif (count($parts) === 2) {
+                                    $minutes = (int) $parts[0];
+                                    $seconds = (int) $parts[1];
+                                    return $minutes + ($seconds / 60);
+                                }
+                                return (float) $state;
+                            }),
                         Forms\Components\Toggle::make('is_preview')
                             ->label('Free Preview Lesson')
                             ->default(false),
@@ -97,8 +117,16 @@ class LessonResource extends Resource
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('duration_minutes')
-                    ->numeric()
-                    ->suffix(' min')
+                    ->label('Duration')
+                    ->state(function (Lesson $record) {
+                        $state = $record->duration_minutes;
+                        if (!$state) return '00:00:00';
+                        $totalSeconds = (int) round($state * 60);
+                        $hours = floor($totalSeconds / 3600);
+                        $minutes = floor(($totalSeconds / 60) % 60);
+                        $seconds = $totalSeconds % 60;
+                        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                    })
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_preview')
                     ->boolean()
@@ -110,6 +138,11 @@ class LessonResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_preview'),
+                Tables\Filters\SelectFilter::make('course')
+                    ->relationship('chapter.course', 'title')
+                    ->preload()
+                    ->searchable()
+                    ->label('Course'),
                 Tables\Filters\SelectFilter::make('chapter_id')
                     ->relationship('chapter', 'title')
                     ->preload()

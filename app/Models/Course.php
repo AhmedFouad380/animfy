@@ -43,6 +43,7 @@ class Course extends Model
         'rating',
         'duration_hours',
         'is_active',
+        'students_count',
     ];
 
     /**
@@ -55,6 +56,7 @@ class Course extends Model
         'price' => 'decimal:2',
         'discount_price' => 'decimal:2',
         'rating' => 'decimal:1',
+        'students_count' => 'integer',
     ];
 
     /**

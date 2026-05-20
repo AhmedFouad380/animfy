@@ -3,19 +3,12 @@
 namespace App\Filament\Resources\CourseResource\Pages;
 
 use App\Filament\Resources\CourseResource;
-use Filament\Actions;
+use App\Filament\Traits\TranslatableCreatePage;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateCourse extends CreateRecord
 {
-    use CreateRecord\Concerns\Translatable;
+    use TranslatableCreatePage;
 
     protected static string $resource = CourseResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\LocaleSwitcher::make(),
-        ];
-    }
 }

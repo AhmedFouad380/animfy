@@ -17,6 +17,8 @@ class ThreeDObject extends Model
      */
     public $translatable = [
         'title',
+        'description_header',
+        'description',
     ];
 
     /**
@@ -26,10 +28,14 @@ class ThreeDObject extends Model
      */
     protected $fillable = [
         'title',
+        'slug',
         'thumbnail',
         'price',
         'discount_price',
+        'description_header',
+        'description',
         'purchase_url',
+        'file_path',
         'is_active',
     ];
 
@@ -41,4 +47,12 @@ class ThreeDObject extends Model
         'price' => 'decimal:2',
         'discount_price' => 'decimal:2',
     ];
+
+    /**
+     * Get enrollments relation.
+     */
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
 }
