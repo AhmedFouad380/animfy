@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
                 ],
             ],
             'rating' => 4.9,
-            'duration_hours' => 35,
+            'duration' => '35:00:00',
             'is_active' => true,
         ]);
 
@@ -151,7 +151,7 @@ class DatabaseSeeder extends Seeder
                 ],
             ],
             'rating' => 4.8,
-            'duration_hours' => 40,
+            'duration' => '40:00:00',
             'is_active' => true,
         ]);
 
@@ -323,6 +323,7 @@ class DatabaseSeeder extends Seeder
                 'ar' => 'حقيبة خامات الإضاءة الواقعية للمشاهد الداخلية',
                 'en' => 'Studio HDRI & Real-time Lighting Presets Pack',
             ],
+            'slug' => 'studio-hdri-lighting-presets-pack',
             'thumbnail' => 'addons/thumbnails/lighting_pack.jpg',
             'price' => 500,
             'discount_price' => 300,
@@ -335,6 +336,7 @@ class DatabaseSeeder extends Seeder
                 'ar' => 'هيكل شخصية كرتونية مجهز بالكامل للتحريك (Rigged Rig)',
                 'en' => 'Biped cartoon Character Rig ready for Animation',
             ],
+            'slug' => 'biped-cartoon-character-rig',
             'thumbnail' => 'addons/thumbnails/rig_pack.jpg',
             'price' => 800,
             'discount_price' => 600,
@@ -348,6 +350,7 @@ class DatabaseSeeder extends Seeder
                 'ar' => 'مجسم سيارة رياضية 3D عالية الدقة والتفاصيل',
                 'en' => 'High-Poly Futuristic Sports Car 3D Asset',
             ],
+            'slug' => 'futuristic-sports-car-3d-asset',
             'thumbnail' => 'objects/thumbnails/car_object.jpg',
             'price' => 1200,
             'discount_price' => 900,
@@ -360,6 +363,7 @@ class DatabaseSeeder extends Seeder
                 'ar' => 'مجموعة أثاث مكتبي بتصميم ريترو عتيق',
                 'en' => 'Vintage Retro Office Furniture Set 3D model',
             ],
+            'slug' => 'vintage-retro-office-furniture-set',
             'thumbnail' => 'objects/thumbnails/furniture_object.jpg',
             'price' => 400,
             'discount_price' => null,

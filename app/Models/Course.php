@@ -41,7 +41,7 @@ class Course extends Model
         'description',
         'what_you_will_learn',
         'rating',
-        'duration_hours',
+        'duration',
         'is_active',
         'students_count',
     ];

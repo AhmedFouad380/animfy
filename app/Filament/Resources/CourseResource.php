@@ -64,11 +64,15 @@ class CourseResource extends Resource
                             ->numeric()
                             ->prefix('EGP')
                             ->placeholder('0.00'),
-                        Forms\Components\TextInput::make('duration_hours')
+                        Forms\Components\TextInput::make('duration')
                             ->required()
-                            ->numeric()
-                            ->default(0)
-                            ->suffix('Hours'),
+                            ->default('00:00:00')
+                            ->placeholder('HH:MM:SS')
+                            ->regex('/^\d+:[0-5]\d:[0-5]\d$/')
+                            ->validationMessages([
+                                'regex' => 'The duration format must be HH:MM:SS (e.g., 02:30:00 or 120:15:30).',
+                            ])
+                            ->label('Duration (HH:MM:SS)'),
                         Forms\Components\TextInput::make('students_count')
                             ->required()
                             ->numeric()
@@ -123,9 +127,8 @@ class CourseResource extends Resource
                 Tables\Columns\IconColumn::make('is_best_seller')
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('duration_hours')
-                    ->numeric()
-                    ->suffix(' hrs')
+                Tables\Columns\TextColumn::make('duration')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('students_count')
                     ->numeric()

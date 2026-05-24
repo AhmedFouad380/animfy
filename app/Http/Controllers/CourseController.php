@@ -96,13 +96,7 @@ class CourseController extends Controller
         ]);
 
         // Recalculate course average rating
-        $avgRating = Review::where('course_id', $course->id)
-            ->where('is_approved', true)
-            ->avg('rating');
-
-        $course->update([
-            'rating' => $avgRating ?: 5.0
-        ]);
+        Review::updateCourseRating($course->id);
 
         $message = app()->getLocale() === 'ar'
             ? 'تمت إضافة التقييم بنجاح!'

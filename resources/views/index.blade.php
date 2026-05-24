@@ -2,15 +2,15 @@
 
 @section('content')
   <!-- ==========================================
-       COVER
-  =========================================== -->
+         COVER
+    =========================================== -->
   <div class="cover">
     <img src="{{ asset('imgs/covers/cover.jpg') }}" alt="Cover Image" />
   </div>
 
   <!-- ==========================================
-       PROFILE
-  =========================================== -->
+         PROFILE
+    =========================================== -->
   <div class="container">
     <div class="profile">
       <div class="profile-box">
@@ -21,9 +21,9 @@
             {{ app()->getLocale() === 'ar' ? 'أكاديمية تعليم الرسوم المتحركة والـ 3D' : 'Animation & 3D Academy' }}
           </div>
           <div class="description">
-            {{ app()->getLocale() === 'ar' 
-               ? 'منصة احترافية لتعلم الرسوم المتحركة ثلاثية الأبعاد، المونتاج، والذكاء الاصطناعي من الصفر وحتى الاحتراف.' 
-               : 'Animfy is a creative studio teaching 3D, video editing, and AI tools from scratch to professional.' }}
+            {{ app()->getLocale() === 'ar'
+    ? 'منصة احترافية لتعلم الرسوم المتحركة ثلاثية الأبعاد، المونتاج، والذكاء الاصطناعي من الصفر وحتى الاحتراف.'
+    : 'Animfy is a creative studio teaching 3D, video editing, and AI tools from scratch to professional.' }}
           </div>
 
           <div class="social-icons">
@@ -42,13 +42,13 @@
           </div>
 
           <button class="products-btn active-btn-profile" onclick="showProducts()">
-              {{ app()->getLocale() === 'ar' ? 'المنتجات التعليمية' : 'Products' }}
+            {{ app()->getLocale() === 'ar' ? 'المنتجات التعليمية' : 'Products' }}
           </button>
           <button class="bio-btn" onclick="showBio()">
-              {{ app()->getLocale() === 'ar' ? 'من نحن' : 'Bio' }}
+            {{ app()->getLocale() === 'ar' ? 'من نحن' : 'Bio' }}
           </button>
           <button class="portfolio-btn" onclick="showPortfolio()">
-              {{ app()->getLocale() === 'ar' ? 'معرض أعمالنا' : 'Our Work' }}
+            {{ app()->getLocale() === 'ar' ? 'معرض أعمالنا' : 'Our Work' }}
           </button>
         </div>
       </div>
@@ -56,10 +56,10 @@
   </div>
 
   <!-- ==========================================
-       COURSES & ASSETS CONTAINER
-  =========================================== -->
+         COURSES & ASSETS CONTAINER
+    =========================================== -->
   <div class="container">
-    
+
     <!-- PRODUCTS SECTION -->
     <div id="products-section" class="section">
       <!-- PRODUCTS NAV -->
@@ -90,7 +90,8 @@
                 </div>
               @endif
 
-              <img class="course-img" src="{{ asset('storage/' . $course->thumbnail) }}" onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Course Thumbnail"/>
+              <img class="course-img" src="{{ asset('storage/' . $course->thumbnail) }}"
+                onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Course Thumbnail" />
 
               <div class="rating">
                 <div class="stars">
@@ -108,27 +109,28 @@
 
               <div class="course-title">{{ $course->title }}</div>
               <div class="course-slogan">{{ $course->slogan }}</div>
-              
+
               <div class="meta">
                 <span class="meta-item">
                   <i class="fa-regular fa-clock"></i>
-                  {{ $course->duration_hours }} {{ app()->getLocale() === 'ar' ? 'ساعة' : 'hr' }}
+                  {{ $course->duration }}
                 </span>
                 <span class="meta-item">
                   <i class="fa-regular fa-circle-play"></i>
                   {{ $course->lessons->count() }} {{ app()->getLocale() === 'ar' ? 'درس' : 'Lessons' }}
                 </span>
-                <span class="meta-item">
-                  <i class="fa-solid fa-user-graduate"></i>
-                  {{ number_format(($course->students_count ?? 1500) + $course->enrollments()->where('status', 'active')->count()) }}
-                </span>
+                <!-- <span class="meta-item">
+                      <i class="fa-solid fa-user-graduate"></i>
+                      {{ number_format(($course->students_count ?? 1500) + $course->enrollments()->where('status', 'active')->count()) }}
+                    </span> -->
               </div>
 
               <div class="price">
                 @if($course->discount_price)
                   {{ number_format($course->discount_price) }} EGP
                   <span class="old-price">{{ number_format($course->price) }}</span>
-                  <span class="dis-percentage">-{{ round((($course->price - $course->discount_price) / $course->price) * 100) }}%</span>
+                  <span
+                    class="dis-percentage">-{{ round((($course->price - $course->discount_price) / $course->price) * 100) }}%</span>
                 @else
                   {{ number_format($course->price) }} EGP
                 @endif
@@ -140,7 +142,7 @@
             </div>
           @empty
             <p style="color: #bbb; text-align: center; width: 100%;">
-                {{ app()->getLocale() === 'ar' ? 'لا توجد دورات تدريبية نشطة حالياً.' : 'No courses available right now.' }}
+              {{ app()->getLocale() === 'ar' ? 'لا توجد دورات تدريبية نشطة حالياً.' : 'No courses available right now.' }}
             </p>
           @endforelse
         </div>
@@ -151,16 +153,18 @@
         <div class="course-container">
           @forelse($addons as $addon)
             <div class="course-card">
-              <img class="course-img" src="{{ asset('storage/' . $addon->thumbnail) }}" onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Addon Thumbnail"/>
-              
+              <img class="course-img" src="{{ asset('storage/' . $addon->thumbnail) }}"
+                onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Addon Thumbnail" />
+
               <div class="course-title" style="margin-top: 15px;">{{ $addon->title }}</div>
               <div class="course-slogan">{{ $addon->description_header }}</div>
-              
+
               <div class="price">
                 @if($addon->discount_price)
                   {{ number_format($addon->discount_price) }} EGP
                   <span class="old-price">{{ number_format($addon->price) }}</span>
-                  <span class="dis-percentage">-{{ round((($addon->price - $addon->discount_price) / $addon->price) * 100) }}%</span>
+                  <span
+                    class="dis-percentage">-{{ round((($addon->price - $addon->discount_price) / $addon->price) * 100) }}%</span>
                 @else
                   {{ number_format($addon->price) }} EGP
                 @endif
@@ -172,7 +176,7 @@
             </div>
           @empty
             <p style="color: #bbb; text-align: center; width: 100%;">
-                {{ app()->getLocale() === 'ar' ? 'الإضافات قادمة قريباً!' : 'Addons coming soon!' }}
+              {{ app()->getLocale() === 'ar' ? 'الإضافات قادمة قريباً!' : 'Addons coming soon!' }}
             </p>
           @endforelse
         </div>
@@ -183,16 +187,18 @@
         <div class="course-container">
           @forelse($threeDObjects as $object)
             <div class="course-card">
-              <img class="course-img" src="{{ asset('storage/' . $object->thumbnail) }}" onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Object Thumbnail"/>
-              
+              <img class="course-img" src="{{ asset('storage/' . $object->thumbnail) }}"
+                onerror="this.src='{{ asset('imgs/courses-thumbnails/blender-thumbnail.jpg') }}'" alt="Object Thumbnail" />
+
               <div class="course-title" style="margin-top: 15px;">{{ $object->title }}</div>
               <div class="course-slogan">{{ $object->description_header }}</div>
-              
+
               <div class="price">
                 @if($object->discount_price)
                   {{ number_format($object->discount_price) }} EGP
                   <span class="old-price">{{ number_format($object->price) }}</span>
-                  <span class="dis-percentage">-{{ round((($object->price - $object->discount_price) / $object->price) * 100) }}%</span>
+                  <span
+                    class="dis-percentage">-{{ round((($object->price - $object->discount_price) / $object->price) * 100) }}%</span>
                 @else
                   {{ number_format($object->price) }} EGP
                 @endif
@@ -204,7 +210,7 @@
             </div>
           @empty
             <p style="color: #bbb; text-align: center; width: 100%;">
-                {{ app()->getLocale() === 'ar' ? 'المجسمات قادمة قريباً!' : '3D Models coming soon!' }}
+              {{ app()->getLocale() === 'ar' ? 'المجسمات قادمة قريباً!' : '3D Models coming soon!' }}
             </p>
           @endforelse
         </div>
@@ -213,7 +219,9 @@
 
     <!-- BIO SECTION -->
     <div id="bio-section" class="bio-section" style="display:none;">
-      <h3>{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('bio_title_ar', 'نبذة عن أكاديمية Animfy') : \App\Models\Setting::get('bio_title_en', 'About Animfy Studio') }}</h3>
+      <h3>
+        {{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('bio_title_ar', 'نبذة عن أكاديمية Animfy') : \App\Models\Setting::get('bio_title_en', 'About Animfy Studio') }}
+      </h3>
       <p>
         {!! nl2br(e(app()->getLocale() === 'ar' ? \App\Models\Setting::get('bio_text_ar', 'في أكاديمية Animfy، ندمج بين الفن والتكنولوجيا لتبسيط مجالات الرسوم المتحركة ثلاثية الأبعاد (3D Animation)، المونتاج، والذكاء الاصطناعي وجعلها ممتعة وعملية. نؤمن بالتعليم القائم على التطبيق والمشاريع الواقعية لتمكين الطلاب من بناء محفظة أعمال (Portfolio) مميزة تؤهلهم لسوق العمل مباشرة.') : \App\Models\Setting::get('bio_text_en', 'At Animfy, we bring creativity and technology together to make learning 3D animation, video editing, and AI tools simple, practical, and fun. Every course we design is project-based, giving you real-world experience and creative confidence.'))) !!}
       </p>
@@ -221,25 +229,52 @@
 
     <!-- PORTFOLIO SECTION -->
     <div id="portfolio-section" class="portfolio-section" style="display:none;">
+      @php
+        $smallItems = $portfolios->where('size', 'small')->values();
+        $bigItems = $portfolios->where('size', 'big')->values();
+        $groupCount = max(ceil($smallItems->count() / 2), $bigItems->count());
+
+        $uniqueGroups = [];
+        for ($i = 0; $i < $groupCount; $i++) {
+          $groupSmall = $smallItems->slice($i * 2, 2);
+          $groupBig = $bigItems->get($i);
+          if ($groupSmall->isNotEmpty() || $groupBig) {
+            $uniqueGroups[] = [
+              'small' => $groupSmall,
+              'big' => $groupBig
+            ];
+          }
+        }
+
+        // Determine repetitions to ensure the track has enough items to span wide screens
+        $repeats = 2;
+        if (count($uniqueGroups) === 1) {
+          $repeats = 4;
+        }
+      @endphp
       <div class="portfolio-slider">
-        <div class="slider-track">
-          <!-- Duplicated track rendering for portfolio grid dynamically -->
-          @foreach([1, 2] as $groupRun)
-            <div class="portfolio-group">
-              <div class="small-column">
-                @foreach($portfolios->where('size', 'small')->take(2) as $smallItem)
-                  <div class="small-card">
-                    <img src="{{ asset('storage/' . $smallItem->image_path) }}" onerror="this.src='{{ asset('imgs/our-work/sushi.png') }}'" alt="Work Showcase">
-                  </div>
-                @endforeach
-              </div>
-              @if($bigItem = $portfolios->where('size', 'big')->first())
-                <div class="big-card">
-                  <img src="{{ asset('storage/' . $bigItem->image_path) }}" onerror="this.src='{{ asset('imgs/our-work/omega3-2.png') }}'" alt="Work Showcase">
+        <div class="slider-track"
+          style="--translate-x: {{ $repeats === 4 ? 'calc(-25% - 7.5px)' : 'calc(-50% - 15px)' }};">
+          @for($r = 0; $r < $repeats; $r++)
+            @foreach($uniqueGroups as $group)
+              <div class="portfolio-group">
+                <div class="small-column">
+                  @foreach($group['small'] as $smallItem)
+                    <div class="small-card">
+                      <img src="{{ asset('storage/' . $smallItem->image_path) }}"
+                        onerror="this.src='{{ asset('imgs/our-work/sushi.png') }}'" alt="Work Showcase">
+                    </div>
+                  @endforeach
                 </div>
-              @endif
-            </div>
-          @endforeach
+                @if($group['big'])
+                  <div class="big-card">
+                    <img src="{{ asset('storage/' . $group['big']->image_path) }}"
+                      onerror="this.src='{{ asset('imgs/our-work/omega3-2.png') }}'" alt="Work Showcase">
+                  </div>
+                @endif
+              </div>
+            @endforeach
+          @endfor
         </div>
       </div>
     </div>
@@ -248,40 +283,40 @@
   <script>
     // Tab and view controllers
     function showTab(tabId, el) {
-        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active-btn-products-nav'));
-        
-        document.getElementById(tabId + '-content').style.display = 'block';
-        el.classList.add('active-btn-products-nav');
+      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active-btn-products-nav'));
+
+      document.getElementById(tabId + '-content').style.display = 'block';
+      el.classList.add('active-btn-products-nav');
     }
 
     function showProducts() {
-        hideAllSections();
-        document.getElementById('products-section').style.display = 'block';
-        toggleProfileBtn('.products-btn');
+      hideAllSections();
+      document.getElementById('products-section').style.display = 'block';
+      toggleProfileBtn('.products-btn');
     }
 
     function showBio() {
-        hideAllSections();
-        document.getElementById('bio-section').style.display = 'block';
-        toggleProfileBtn('.bio-btn');
+      hideAllSections();
+      document.getElementById('bio-section').style.display = 'block';
+      toggleProfileBtn('.bio-btn');
     }
 
     function showPortfolio() {
-        hideAllSections();
-        document.getElementById('portfolio-section').style.display = 'block';
-        toggleProfileBtn('.portfolio-btn');
+      hideAllSections();
+      document.getElementById('portfolio-section').style.display = 'block';
+      toggleProfileBtn('.portfolio-btn');
     }
 
     function hideAllSections() {
-        document.getElementById('products-section').style.display = 'none';
-        document.getElementById('bio-section').style.display = 'none';
-        document.getElementById('portfolio-section').style.display = 'none';
+      document.getElementById('products-section').style.display = 'none';
+      document.getElementById('bio-section').style.display = 'none';
+      document.getElementById('portfolio-section').style.display = 'none';
     }
 
     function toggleProfileBtn(selector) {
-        document.querySelectorAll('.profile button').forEach(btn => btn.classList.remove('active-btn-profile'));
-        document.querySelector(selector).classList.add('active-btn-profile');
+      document.querySelectorAll('.profile button').forEach(btn => btn.classList.remove('active-btn-profile'));
+      document.querySelector(selector).classList.add('active-btn-profile');
     }
   </script>
 @endsection

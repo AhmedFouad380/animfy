@@ -12,76 +12,76 @@
   font-style: normal;
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial;
 }
 
 
-html{
-    scroll-behavior:smooth;
-    height:100%;
+html {
+  scroll-behavior: smooth;
+  height: 100%;
 }
 
-body{
-    background:#fef4f1;
-    color:#222;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    font-family: "Nunito";
+body {
+  background: #fef4f1;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Nunito";
 }
 
 /* =========================
    NAVBAR
 ========================= */
 
-.main-container{
-    width:90%;
-    max-width:1300px;
-    margin:auto;
+.main-container {
+  width: 90%;
+  max-width: 1300px;
+  margin: auto;
 }
 
-.navbar{
-    height:75px;
-    background:#fff;
-    display:flex;
-    align-items:center;
-    box-shadow:0 10px 60px 6px rgba(0,0,0,0.15);
+.navbar {
+  height: 75px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 10px 60px 6px rgba(0, 0, 0, 0.15);
 }
 
-.logo-login{
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.logo-login {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    cursor:pointer;
-    text-decoration:none;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
-.company-name-logo{
-    display:flex;
-    align-items:center;
-    cursor:pointer;
-    font-size:25px;
-    text-decoration:none;
-    color:#222;
-    font-family: "Petit";
+.company-name-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 25px;
+  text-decoration: none;
+  color: #222;
+  font-family: "Petit";
 }
 
-.logo-circle{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    object-fit:cover;
+.logo-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 
@@ -104,9 +104,10 @@ body{
   font-family: Arial;
 }
 
-.course-name{
-    color: #fff;
-    margin-bottom: 30px;
+.course-name {
+  color: #fff;
+  margin-bottom: 30px;
+  padding-left: 10px;
 }
 
 .chapter {
@@ -115,16 +116,16 @@ body{
 }
 
 .chapter-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px;
-    background: transparent;
-    color: #fff;
-    border: 1px solid #da6319;
-    cursor: pointer;
-    user-select: none;
-    border-radius: 5px 5px 0px 0px;
-    
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #da6319;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 5px 5px 0px 0px;
+
 }
 
 .lessons {
@@ -177,6 +178,7 @@ body{
   transform: rotate(180deg);
   transition: 0.3s;
 }
+
 /* Main */
 .main {
   flex: 1;
@@ -185,9 +187,9 @@ body{
   padding: 20px;
 }
 
-.video-box{
-    width: 100%;
-    border-radius: 10px;
+.video-box {
+  width: 100%;
+  border-radius: 10px;
 }
 
 .video-box video {
@@ -214,17 +216,17 @@ body{
 
 /* review button (left) */
 .review-btn {
-    width: auto;
-    min-width: 120px;
-    padding: 0 20px;
-    height: 40px;
-    border: 1px solid #da6319;
-    border-radius: 20px;
-    color: #da6319;
-    background: #fef4f1;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
+  width: auto;
+  min-width: 120px;
+  padding: 0 20px;
+  height: 40px;
+  border: 1px solid #da6319;
+  border-radius: 20px;
+  color: #da6319;
+  background: #fef4f1;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 .review-btn:hover {
@@ -233,22 +235,22 @@ body{
 }
 
 .previous-btn,
-.next-btn{
-    width:120px;
-    height:40px;
-    border:1px solid #da6319;
-    border-radius:20px;
-    color:#da6319;
-    background:#fef4f1;
-    cursor:pointer;
-    font-weight:bold;
-    transition:0.3s;
+.next-btn {
+  width: 120px;
+  height: 40px;
+  border: 1px solid #da6319;
+  border-radius: 20px;
+  color: #da6319;
+  background: #fef4f1;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 .previous-btn:hover,
-.next-btn:hover{
-    color:#fff;
-    background:#da6319;
+.next-btn:hover {
+  color: #fff;
+  background: #da6319;
 }
 
 
@@ -257,8 +259,8 @@ body{
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter:blur(5px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
   display: none;
   justify-content: center;
   align-items: center;
@@ -273,8 +275,8 @@ body{
   text-align: center;
 }
 
-.popup h2{
-    color: #da6319;
+.popup h2 {
+  color: #da6319;
 }
 
 .stars span {
@@ -293,7 +295,7 @@ textarea {
   height: 80px;
   margin-top: 10px;
   background: #fef4f1;
-  border:1px solid #ddd;
+  border: 1px solid #ddd;
   outline: none;
   font-size: 15px;
   padding: 10px;
@@ -302,9 +304,9 @@ textarea {
   resize: none;
 }
 
-textarea:focus{
+textarea:focus {
 
-    border:1px solid #da6319;
+  border: 1px solid #da6319;
 }
 
 .popup-actions {
@@ -314,22 +316,22 @@ textarea:focus{
 }
 
 .submit-btn,
-.cancel-btn{
-    width:120px;
-    height:40px;
-    border:1px solid #da6319;
-    border-radius:20px;
-    color:#da6319;
-    background:#fef4f1;
-    cursor:pointer;
-    font-weight:bold;
-    transition:0.3s;
+.cancel-btn {
+  width: 120px;
+  height: 40px;
+  border: 1px solid #da6319;
+  border-radius: 20px;
+  color: #da6319;
+  background: #fef4f1;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 .submit-btn:hover,
-.cancel-btn:hover{
-    color:#fff;
-    background:#da6319;
+.cancel-btn:hover {
+  color: #fff;
+  background: #da6319;
 }
 
 /* LESSON INFO */
@@ -353,34 +355,34 @@ textarea:focus{
    FOOTER
 ========================= */
 
-.footer{
-    margin-top:auto;
+.footer {
+  margin-top: auto;
 
-    background:#0b0b2d;
-    color:#fff;
+  background: #0b0b2d;
+  color: #fff;
 
-    text-align:center;
+  text-align: center;
 
-    padding:25px;
+  padding: 25px;
 }
 
-.company-name{
-    font-family: "Petit";
-    font-size: 25px;
+.company-name {
+  font-family: "Petit";
+  font-size: 25px;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media(max-width:768px){
+@media(max-width:768px) {
 
-    .navbar{
-        padding:10px 0;
-    }
+  .navbar {
+    padding: 10px 0;
+  }
 
-    .page-title{
-        font-size:28px;
-    }
+  .page-title {
+    font-size: 28px;
+  }
 
 }

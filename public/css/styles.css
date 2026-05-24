@@ -488,6 +488,8 @@ body{
     overflow:hidden;
 
     position:relative;
+
+    direction: ltr;
 }
 
 .slider-track{
@@ -601,7 +603,7 @@ body{
     }
 
     to{
-        transform:translateX(calc(-50% - 15px));
+        transform:translateX(var(--translate-x, calc(-50% - 15px)));
     }
 
 }

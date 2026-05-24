@@ -45,4 +45,51 @@ class Review extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    /**
+     * Boot the model.
+     */
+    protected static function booted()
+    {
+        static::saved(function ($review) {
+            $review->recalculateCourseRating();
+
+            // If the course_id was changed, also recalculate the old course rating
+            if ($review->wasChanged('course_id')) {
+                $originalCourseId = $review->getOriginal('course_id');
+                if ($originalCourseId) {
+                    self::updateCourseRating($originalCourseId);
+                }
+            }
+        });
+
+        static::deleted(function ($review) {
+            $review->recalculateCourseRating();
+        });
+    }
+
+    /**
+     * Recalculate course average rating and save it.
+     */
+    public function recalculateCourseRating()
+    {
+        if ($this->course_id) {
+            self::updateCourseRating($this->course_id);
+        }
+    }
+
+    /**
+     * Calculate average rating of approved reviews and update Course table.
+     */
+    public static function updateCourseRating($courseId)
+    {
+        $avgRating = self::where('course_id', $courseId)
+            ->where('is_approved', true)
+            ->avg('rating');
+
+        Course::where('id', $courseId)->update([
+            'rating' => $avgRating !== null ? round($avgRating, 1) : 5.0
+        ]);
+    }
 }
+
