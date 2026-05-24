@@ -49,6 +49,7 @@ class ThreeDObjectResource extends Resource
                         Forms\Components\FileUpload::make('file_path')
                             ->directory('objects/files')
                             ->visibility('public')
+                            ->preserveFilenames()
                             ->label('3D Object File (.ZIP, .RAR, .PDF, etc.)')
                             ->required(fn (string $operation) => $operation === 'create'),
                     ])->columns(2),

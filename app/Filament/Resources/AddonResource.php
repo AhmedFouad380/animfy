@@ -49,6 +49,7 @@ class AddonResource extends Resource
                         Forms\Components\FileUpload::make('file_path')
                             ->directory('addons/files')
                             ->visibility('public')
+                            ->preserveFilenames()
                             ->label('Addon File (.ZIP, .RAR, .PDF, etc.)')
                             ->required(fn (string $operation) => $operation === 'create'),
                     ])->columns(2),

@@ -58,6 +58,7 @@ class LessonResource extends Resource
                         Forms\Components\FileUpload::make('attachment_path')
                             ->directory('lessons/attachments')
                             ->visibility('public')
+                            ->preserveFilenames()
                             ->placeholder('Upload course materials (PDF, ZIP, etc.)'),
                         Forms\Components\TextInput::make('duration_minutes')
                             ->label('Duration (HH:MM:SS)')
