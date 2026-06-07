@@ -20,6 +20,7 @@ use App\Http\Controllers\PaymentController;
 // Home & Localization
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/lang/{locale}', [HomeController::class, 'setLocale'])->name('locale.set');
+Route::get('/legal/{tab?}', [HomeController::class, 'showLegal'])->name('legal');
 
 // Course Details (Public)
 Route::get('/course/{slug}', [CourseController::class, 'show'])->name('course.show');

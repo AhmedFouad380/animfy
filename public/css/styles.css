@@ -843,6 +843,26 @@ body{
     font-family: "Petit";
     font-size: 25px;
 }
+
+.footer-links{
+    margin-top:15px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.footer-links a{
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.footer-links a:hover{
+    text-decoration:underline;
+    color: #da6319;
+}
 /* =========================
     TAB CONTENT
 ========================= */

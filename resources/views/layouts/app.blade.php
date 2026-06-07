@@ -335,8 +335,15 @@
        FOOTER
   =========================================== -->
     <div class="footer">
-        Powered by <span
-            class="company-name">{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('site_name_ar', 'ANIMFY') : \App\Models\Setting::get('site_name_en', 'ANIMFY') }}</span>
+        <p>
+            Powered by <span class="company-name">{{ app()->getLocale() === 'ar' ? \App\Models\Setting::get('site_name_ar', 'ANIMFY') : \App\Models\Setting::get('site_name_en', 'ANIMFY') }}</span>
+        </p>
+        <div class="footer-links">
+            <a href="{{ route('legal', 'policy') }}">{{ app()->getLocale() === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy' }}</a>
+            <a href="{{ route('legal', 'terms') }}">{{ app()->getLocale() === 'ar' ? 'الشروط والأحكام' : 'Terms & Conditions' }}</a>
+            <a href="{{ route('legal', 'refund') }}">{{ app()->getLocale() === 'ar' ? 'سياسة الاسترجاع والإلغاء' : 'Refund & Cancellation' }}</a>
+            <a href="{{ route('legal', 'contact') }}">{{ app()->getLocale() === 'ar' ? 'اتصل بنا' : 'Contact Us' }}</a>
+        </div>
     </div>
 
     <script src="{{ asset('js/script.js') }}"></script>

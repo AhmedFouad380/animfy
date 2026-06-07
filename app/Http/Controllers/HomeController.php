@@ -136,4 +136,16 @@ class HomeController extends Controller
         
         return back()->with('error', app()->getLocale() === 'ar' ? 'الملف غير متوفر حالياً.' : 'File not available.');
     }
+
+    /**
+     * Show legal pages (Privacy Policy, Terms, Refund, Contact Us).
+     */
+    public function showLegal($tab = 'policy')
+    {
+        $validTabs = ['policy', 'terms', 'refund', 'contact'];
+        if (!in_array($tab, $validTabs)) {
+            $tab = 'policy';
+        }
+        return view('legal', compact('tab'));
+    }
 }
