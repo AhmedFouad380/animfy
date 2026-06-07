@@ -853,7 +853,7 @@ body{
 }
 
 .footer-links a{
-    color:#fff;
+    color:#fff !important;
     text-decoration:none;
     font-size:14px;
     transition:0.3s;
@@ -861,7 +861,7 @@ body{
 
 .footer-links a:hover{
     text-decoration:underline;
-    color: #da6319;
+    color: #da6319 !important;
 }
 /* =========================
     TAB CONTENT
