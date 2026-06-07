@@ -21,7 +21,15 @@ class CourseController extends Controller
         // Get approved reviews
         $reviews = $course->reviews()->where('is_approved', true)->with('user')->get();
 
-        return view('course-details', compact('course', 'reviews'));
+        $isPurchased = false;
+        if (auth()->check()) {
+            $isPurchased = Enrollment::where('user_id', auth()->id())
+                ->where('course_id', $course->id)
+                ->where('status', 'active')
+                ->exists();
+        }
+
+        return view('course-details', compact('course', 'reviews', 'isPurchased'));
     }
 
     /**

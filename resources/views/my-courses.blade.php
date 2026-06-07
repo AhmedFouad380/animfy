@@ -105,15 +105,15 @@
                 <div class="course-title" style="margin-top: 15px;">{{ $addon->title }}</div>
                 <div class="course-slogan">{{ $addon->description_header }}</div>
 
-                <div style="margin-top: 20px; display: flex; gap: 10px; flex-direction: column;">
-                  <a href="{{ $addon->slug ? route('addon.show', $addon->slug) : '#' }}" class=" buy-btn"
-                    style="text-align: center; display: block; text-decoration: none; line-height: 1.5; font-weight: 600; margin-top: 0; background: #fff; border-color: #da6319; color: #da6319;">
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                  <a href="{{ $addon->slug ? route('addon.show', $addon->slug) : '#' }}" class="watch-btn"
+                    style="flex: 1; margin-top: 0; text-align: center;">
                     {{ app()->getLocale() === 'ar' ? 'عرض التفاصيل' : 'View Details' }}
                   </a>
-                  <a href="{{ route('download.addon', $addon->id) }}" class="buy-btn"
-                    style="text-align: center; display: block; text-decoration: none; line-height: 1.5; font-weight: 600; margin-top: 0; background: #fff; border-color: #da6319; color: #da6319;">
-                    <i class="fa-solid fa-download"></i>
-                    {{ app()->getLocale() === 'ar' ? 'تحميل الملف الآن' : 'Download Now' }}
+                  <a href="{{ route('download.addon', $addon->id) }}" class="watch-btn"
+                    style="flex: 1; margin-top: 0; text-align: center;">
+                    <i class="fa-solid fa-download" style="margin-inline-end: 4px;"></i>
+                    {{ app()->getLocale() === 'ar' ? 'تحميل' : 'Download' }}
                   </a>
                 </div>
               </div>
@@ -147,15 +147,15 @@
                 <div class="course-title" style="margin-top: 15px;">{{ $object->title }}</div>
                 <div class="course-slogan">{{ $object->description_header }}</div>
 
-                <div style="margin-top: 20px; display: flex; gap: 10px; flex-direction: column;">
-                  <a href="{{ $addon->slug ? route('addon.show', $addon->slug) : '#' }}" class="watch-btn buy-btn"
-                    style="text-align: center; display: block; text-decoration: none; line-height: 1.5; font-weight: 600; margin-top: 0; background: #fff; border-color: #da6319; color: #da6319;">
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                  <a href="{{ $object->slug ? route('object.show', $object->slug) : '#' }}" class="watch-btn"
+                    style="flex: 1; margin-top: 0; text-align: center;">
                     {{ app()->getLocale() === 'ar' ? 'عرض التفاصيل' : 'View Details' }}
                   </a>
-                  <a href="{{ route('download.addon', $addon->id) }}" class="watch-btn buy-btn"
-                    style="text-align: center; display: block; text-decoration: none; line-height: 1.5; font-weight: 600; margin-top: 0; background: #fff; border-color: #da6319; color: #da6319;">
-                    <i class="fa-solid fa-download"></i>
-                    {{ app()->getLocale() === 'ar' ? 'تحميل الملف الآن' : 'Download Now' }}
+                  <a href="{{ route('download.object', $object->id) }}" class="watch-btn"
+                    style="flex: 1; margin-top: 0; text-align: center;">
+                    <i class="fa-solid fa-download" style="margin-inline-end: 4px;"></i>
+                    {{ app()->getLocale() === 'ar' ? 'تحميل' : 'Download' }}
                   </a>
                 </div>
               </div>

@@ -59,27 +59,6 @@
       <div class="sidebar">
         <div class="sticky-wrapper">
           <div class="price-card">
-            <div class="price">
-              @if($object->discount_price)
-                {{ number_format($object->discount_price) }} EGP
-                <span class="old-price">{{ number_format($object->price) }}</span>
-                <span
-                  class="dis-percentage">-{{ round((($object->price - $object->discount_price) / $object->price) * 100) }}%</span>
-              @else
-                {{ number_format($object->price) }} EGP
-              @endif
-            </div>
-
-            <p>{{ app()->getLocale() === 'ar' ? 'طرق الدفع المتوفرة' : 'Available Payment Methods' }}</p>
-
-            <div class="payment-methods">
-              <img src="{{ asset('imgs/payment-methods/mastercard.png') }}" alt="Mastercard">
-              <img src="{{ asset('imgs/payment-methods/visa.png') }}" alt="Visa">
-              <img src="{{ asset('imgs/payment-methods/vodafone.png') }}" alt="Vodafone Cash">
-              <img src="{{ asset('imgs/payment-methods/etisalat.png') }}" alt="Etisalat Cash">
-              <img src="{{ asset('imgs/payment-methods/orange.png') }}" alt="Orange Cash">
-            </div>
-
             @if($isPurchased)
               <div style="margin-top: 15px; text-align: center;">
                 <span class="download-badge">
@@ -93,6 +72,27 @@
                 {{ app()->getLocale() === 'ar' ? 'تحميل الملف الآن' : 'Download Now' }}
               </a>
             @else
+              <div class="price">
+                @if($object->discount_price)
+                  {{ number_format($object->discount_price) }} EGP
+                  <span class="old-price">{{ number_format($object->price) }}</span>
+                  <span
+                    class="dis-percentage">-{{ round((($object->price - $object->discount_price) / $object->price) * 100) }}%</span>
+                @else
+                  {{ number_format($object->price) }} EGP
+                @endif
+              </div>
+
+              <p>{{ app()->getLocale() === 'ar' ? 'طرق الدفع المتوفرة' : 'Available Payment Methods' }}</p>
+
+              <div class="payment-methods">
+                <img src="{{ asset('imgs/payment-methods/mastercard.png') }}" alt="Mastercard">
+                <img src="{{ asset('imgs/payment-methods/visa.png') }}" alt="Visa">
+                <img src="{{ asset('imgs/payment-methods/vodafone.png') }}" alt="Vodafone Cash">
+                <img src="{{ asset('imgs/payment-methods/etisalat.png') }}" alt="Etisalat Cash">
+                <img src="{{ asset('imgs/payment-methods/orange.png') }}" alt="Orange Cash">
+              </div>
+
               @auth
                 <a href="{{ route('checkout.object', $object->id) }}" class="buy-btn"
                   style="text-align: center; display: block; text-decoration: none; line-height: 1.1; margin-top: 10px;">

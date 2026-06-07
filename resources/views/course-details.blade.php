@@ -30,6 +30,18 @@
       margin-right: 8px;
     }
 
+    .download-badge {
+      background: #10b981;
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     .playable-preview {
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
@@ -204,7 +216,33 @@
                 </span>
                 <span>
                   <i class="fa-regular fa-clock"></i>
-                  {{ $chapter->lessons->sum('duration_minutes') }} {{ app()->getLocale() === 'ar' ? 'دقيقة' : 'min' }}
+                  @php
+                    $totalMin = $chapter->lessons->sum('duration_minutes');
+                    $hours = floor($totalMin / 60);
+                    $minutes = floor($totalMin % 60);
+                    $seconds = round(($totalMin - floor($totalMin)) * 60);
+                  @endphp
+                  @if(app()->getLocale() === 'ar')
+                    @if($hours > 0)
+                      {{ $hours }} ساعة
+                    @endif
+                    @if($minutes > 0 || ($hours === 0 && $seconds === 0))
+                      {{ $minutes }} دقيقة
+                    @endif
+                    @if($seconds > 0)
+                      و {{ $seconds }} ثانية
+                    @endif
+                  @else
+                    @if($hours > 0)
+                      {{ $hours }}h
+                    @endif
+                    @if($minutes > 0 || ($hours === 0 && $seconds === 0))
+                      {{ $minutes }}m
+                    @endif
+                    @if($seconds > 0)
+                      {{ $seconds }}s
+                    @endif
+                  @endif
                 </span>
               </div>
               <div class="chapter-content">
@@ -284,57 +322,63 @@
       <div class="sidebar">
         <div class="sticky-wrapper">
           <div class="price-card">
-            <div class="price">
-              @if($course->discount_price)
-                {{ number_format($course->discount_price) }} EGP
-                <span class="old-price">{{ number_format($course->price) }}</span>
-                <span
-                  class="dis-percentage">-{{ round((($course->price - $course->discount_price) / $course->price) * 100) }}%</span>
-              @else
-                {{ number_format($course->price) }} EGP
-              @endif
-            </div>
-
-            <div class="rating-priceCard">
-              <div class="stars-priceCard">
-                @php $ratingAvg = round($course->rating); @endphp
-                @for($i = 1; $i <= 5; $i++)
-                  @if($i <= $ratingAvg)
-                    <i class="fa-solid fa-star"></i>
-                  @else
-                    <i class="fa-regular fa-star"></i>
-                  @endif
-                @endfor
-                <span>{{ number_format($course->rating, 1) }}</span>
+            @if($isPurchased)
+              <div style="margin-top: 15px; text-align: center; margin-bottom: 10px;">
+                <span class="download-badge">
+                  <i class="fa-solid fa-circle-check"></i>
+                  {{ app()->getLocale() === 'ar' ? 'تم الاشتراك بنجاح' : 'Purchased' }}
+                </span>
               </div>
-            </div>
-            <p>{{ app()->getLocale() === 'ar' ? 'طرق الدفع المتوفرة' : 'Available Payment Methods' }}</p>
+              <a href="{{ route('classroom', $course->id) }}" class="buy-btn"
+                style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
+                {{ app()->getLocale() === 'ar' ? 'مشاهدة الكورس' : 'View Course' }}
+              </a>
+            @else
+              <div class="price">
+                @if($course->discount_price)
+                  {{ number_format($course->discount_price) }} EGP
+                  <span class="old-price">{{ number_format($course->price) }}</span>
+                  <span
+                    class="dis-percentage">-{{ round((($course->price - $course->discount_price) / $course->price) * 100) }}%</span>
+                @else
+                  {{ number_format($course->price) }} EGP
+                @endif
+              </div>
 
-            <div class="payment-methods">
-              <img src="{{ asset('imgs/payment-methods/mastercard.png') }}" alt="Mastercard">
-              <img src="{{ asset('imgs/payment-methods/visa.png') }}" alt="Visa">
-              <img src="{{ asset('imgs/payment-methods/vodafone.png') }}" alt="Vodafone Cash">
-              <img src="{{ asset('imgs/payment-methods/etisalat.png') }}" alt="Etisalat Cash">
-              <img src="{{ asset('imgs/payment-methods/orange.png') }}" alt="Orange Cash">
-            </div>
+              <div class="rating-priceCard">
+                <div class="stars-priceCard">
+                  @php $ratingAvg = round($course->rating); @endphp
+                  @for($i = 1; $i <= 5; $i++)
+                    @if($i <= $ratingAvg)
+                      <i class="fa-solid fa-star"></i>
+                    @else
+                      <i class="fa-regular fa-star"></i>
+                    @endif
+                  @endfor
+                  <span>{{ number_format($course->rating, 1) }}</span>
+                </div>
+              </div>
+              <p>{{ app()->getLocale() === 'ar' ? 'طرق الدفع المتوفرة' : 'Available Payment Methods' }}</p>
 
-            @auth
-              @if(auth()->user()->enrollments()->where('course_id', $course->id)->where('status', 'active')->exists())
-                <a href="{{ route('classroom', $course->id) }}" class="buy-btn"
-                  style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
-                  {{ app()->getLocale() === 'ar' ? 'مشاهدة الكورس' : 'View Course' }}
-                </a>
-              @else
+              <div class="payment-methods">
+                <img src="{{ asset('imgs/payment-methods/mastercard.png') }}" alt="Mastercard">
+                <img src="{{ asset('imgs/payment-methods/visa.png') }}" alt="Visa">
+                <img src="{{ asset('imgs/payment-methods/vodafone.png') }}" alt="Vodafone Cash">
+                <img src="{{ asset('imgs/payment-methods/etisalat.png') }}" alt="Etisalat Cash">
+                <img src="{{ asset('imgs/payment-methods/orange.png') }}" alt="Orange Cash">
+              </div>
+
+              @auth
                 <a href="{{ route('checkout', $course->id) }}" class="buy-btn"
                   style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
                   {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
                 </a>
-              @endif
-            @else
-              <button class="buy-btn" onclick="openPopup('login-popup')">
-                {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
-              </button>
-            @endauth
+              @else
+                <button class="buy-btn" onclick="openPopup('login-popup')">
+                  {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
+                </button>
+              @endauth
+            @endif
           </div>
         </div>
       </div>
@@ -427,16 +471,6 @@
 
     function closePreviewPopup() {
       closePopup('preview-popup');
-      const videoEl = document.getElementById('preview-video');
-      const iframeEl = document.getElementById('preview-iframe');
-
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.src = '';
-      }
-      if (iframeEl) {
-        iframeEl.src = '';
-      }
     }
   </script>
 

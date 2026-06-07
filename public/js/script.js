@@ -100,7 +100,11 @@ function closePopup(id){
 document.querySelectorAll('.popup-overlay').forEach(popup => {
     popup.addEventListener('click', (e) => {
         if(e.target === popup){
-            popup.style.display = "none";
+            if (typeof closePopup === 'function') {
+                closePopup(popup.id);
+            } else {
+                popup.style.display = "none";
+            }
         }
     });
 });

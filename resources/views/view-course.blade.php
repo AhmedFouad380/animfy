@@ -7,6 +7,7 @@
         /* Premium visual styling for the dynamic classroom */
         .layout {
             min-height: calc(100vh - 75px);
+            height: auto !important;
             display: flex;
             background: #fef4f1;
             width: 100%;
@@ -15,9 +16,30 @@
         }
 
         .sidebar {
-            min-height: calc(100vh - 75px);
+            height: calc(100vh - 75px);
+            position: sticky;
+            top: 75px;
+            overflow-y: auto;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px 0 !important;
+        }
+
+        /* Customize sidebar scrollbar for premium dark theme feel */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .lessons {
@@ -55,9 +77,9 @@
         }
 
         .download-btn {
-            background: rgba(255, 255, 255, 0.1) !important;
+            background: transparent !important;
             border: none !important;
-            color: #fff !important;
+            color: #000 !important;
             padding: 4px 8px !important;
             border-radius: 4px !important;
             cursor: pointer;
@@ -68,7 +90,7 @@
         }
 
         .download-btn:hover {
-            background: #10b981 !important;
+            background: transparent !important;
             color: #fff !important;
         }
 
@@ -113,6 +135,32 @@
 
         .star-select.selected {
             color: #f59e0b;
+        }
+
+        .attachment-btn {
+            background: #fef4f1;
+            border: 1px solid #da6319;
+            color: #da6319;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .attachment-btn:hover {
+            background: #da6319;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(218, 99, 25, 0.2);
         }
     </style>
 
@@ -202,8 +250,7 @@
                     <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 16px; line-height: 1.4;">
                         {{ app()->getLocale() === 'ar' ? 'قم بتحميل المرفقات وملفات العمل المخصصة لهذا الدرس للتطبيق بشكل عملي.' : 'Download the attachments and resource files included in this lesson to practice.' }}
                     </p>
-                    <a id="active-lesson-attachment-link" href="" download
-                        style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 12px 24px; font-size: 0.9rem; font-weight: 600; color: #fff; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); border: none; cursor: pointer; width: 100%; box-sizing: border-box; text-align: center;">
+                    <a id="active-lesson-attachment-link" class="attachment-btn" href="" download>
                         <i class="fa-solid fa-download"></i>
                         {{ app()->getLocale() === 'ar' ? 'تحميل ملفات العمل (.ZIP / .PDF)' : 'Download Work Files' }}
                     </a>

@@ -125,14 +125,21 @@
                     </span> -->
               </div>
 
-              <div class="price">
-                @if($course->discount_price)
-                  {{ number_format($course->discount_price) }} EGP
-                  <span class="old-price">{{ number_format($course->price) }}</span>
-                  <span
-                    class="dis-percentage">-{{ round((($course->price - $course->discount_price) / $course->price) * 100) }}%</span>
+              <div class="price" style="display: flex; align-items: center;">
+                @if(in_array($course->id, $enrolledCourseIds))
+                  <span class="purchased-badge" style="background: #10b981; color: #fff; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    {{ app()->getLocale() === 'ar' ? 'تم الشراء' : 'Purchased' }}
+                  </span>
                 @else
-                  {{ number_format($course->price) }} EGP
+                  @if($course->discount_price)
+                    {{ number_format($course->discount_price) }} EGP
+                    <span class="old-price">{{ number_format($course->price) }}</span>
+                    <span
+                      class="dis-percentage">-{{ round((($course->price - $course->discount_price) / $course->price) * 100) }}%</span>
+                  @else
+                    {{ number_format($course->price) }} EGP
+                  @endif
                 @endif
               </div>
 
@@ -159,14 +166,21 @@
               <div class="course-title" style="margin-top: 15px;">{{ $addon->title }}</div>
               <div class="course-slogan">{{ $addon->description_header }}</div>
 
-              <div class="price">
-                @if($addon->discount_price)
-                  {{ number_format($addon->discount_price) }} EGP
-                  <span class="old-price">{{ number_format($addon->price) }}</span>
-                  <span
-                    class="dis-percentage">-{{ round((($addon->price - $addon->discount_price) / $addon->price) * 100) }}%</span>
+              <div class="price" style="display: flex; align-items: center;">
+                @if(in_array($addon->id, $enrolledAddonIds))
+                  <span class="purchased-badge" style="background: #10b981; color: #fff; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    {{ app()->getLocale() === 'ar' ? 'تم الشراء' : 'Purchased' }}
+                  </span>
                 @else
-                  {{ number_format($addon->price) }} EGP
+                  @if($addon->discount_price)
+                    {{ number_format($addon->discount_price) }} EGP
+                    <span class="old-price">{{ number_format($addon->price) }}</span>
+                    <span
+                      class="dis-percentage">-{{ round((($addon->price - $addon->discount_price) / $addon->price) * 100) }}%</span>
+                  @else
+                    {{ number_format($addon->price) }} EGP
+                  @endif
                 @endif
               </div>
 
@@ -193,14 +207,21 @@
               <div class="course-title" style="margin-top: 15px;">{{ $object->title }}</div>
               <div class="course-slogan">{{ $object->description_header }}</div>
 
-              <div class="price">
-                @if($object->discount_price)
-                  {{ number_format($object->discount_price) }} EGP
-                  <span class="old-price">{{ number_format($object->price) }}</span>
-                  <span
-                    class="dis-percentage">-{{ round((($object->price - $object->discount_price) / $object->price) * 100) }}%</span>
+              <div class="price" style="display: flex; align-items: center;">
+                @if(in_array($object->id, $enrolledObjectIds))
+                  <span class="purchased-badge" style="background: #10b981; color: #fff; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    {{ app()->getLocale() === 'ar' ? 'تم الشراء' : 'Purchased' }}
+                  </span>
                 @else
-                  {{ number_format($object->price) }} EGP
+                  @if($object->discount_price)
+                    {{ number_format($object->discount_price) }} EGP
+                    <span class="old-price">{{ number_format($object->price) }}</span>
+                    <span
+                      class="dis-percentage">-{{ round((($object->price - $object->discount_price) / $object->price) * 100) }}%</span>
+                  @else
+                    {{ number_format($object->price) }} EGP
+                  @endif
                 @endif
               </div>
 

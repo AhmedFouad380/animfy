@@ -358,10 +358,24 @@
                 }, 10);
             }
         function closePopup(id) {
-            document.getElementById(id).classList.remove('show');
-            setTimeout(() => {
-                document.getElementById(id).style.display = 'none';
-            }, 300);
+            if (id === 'preview-popup') {
+                const videoEl = document.getElementById('preview-video');
+                const iframeEl = document.getElementById('preview-iframe');
+                if (videoEl) {
+                    videoEl.pause();
+                    videoEl.src = '';
+                }
+                if (iframeEl) {
+                    iframeEl.src = '';
+                }
+            }
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.remove('show');
+                setTimeout(() => {
+                    el.style.display = 'none';
+                }, 300);
+            }
         }
 
         function toggleUserDropdown(event) {

@@ -54,6 +54,7 @@ class LessonResource extends Resource
                             ->visibility('public')
                             ->acceptedFileTypes(['video/mp4', 'video/quicktime', 'video/x-matroska', 'video/x-msvideo'])
                             ->maxSize(3 * 1024 * 1024) // Max size: 3GB (in KB: 3,145,728)
+                            ->dehydrated(fn ($state) => filled($state))
                             ->columnSpanFull(),
                         Forms\Components\FileUpload::make('attachment_path')
                             ->directory('lessons/attachments')

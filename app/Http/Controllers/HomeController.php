@@ -21,7 +21,28 @@ class HomeController extends Controller
         $threeDObjects = ThreeDObject::where('is_active', true)->get();
         $portfolios = Portfolio::where('is_active', true)->get();
 
-        return view('index', compact('courses', 'addons', 'threeDObjects', 'portfolios'));
+        $enrolledCourseIds = [];
+        $enrolledAddonIds = [];
+        $enrolledObjectIds = [];
+
+        if (auth()->check()) {
+            $enrollments = Enrollment::where('user_id', auth()->id())
+                ->where('status', 'active')
+                ->get();
+            $enrolledCourseIds = $enrollments->pluck('course_id')->filter()->toArray();
+            $enrolledAddonIds = $enrollments->pluck('addon_id')->filter()->toArray();
+            $enrolledObjectIds = $enrollments->pluck('three_d_object_id')->filter()->toArray();
+        }
+
+        return view('index', compact(
+            'courses',
+            'addons',
+            'threeDObjects',
+            'portfolios',
+            'enrolledCourseIds',
+            'enrolledAddonIds',
+            'enrolledObjectIds'
+        ));
     }
 
     /**
