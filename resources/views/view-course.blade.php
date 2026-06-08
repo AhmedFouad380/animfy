@@ -177,6 +177,11 @@
         .chapter.open .lessons {
             max-height: none !important;
         }
+
+        /* Add breathing space at the bottom of the main content before footer */
+        .main {
+            padding-bottom: 60px !important;
+        }
     </style>
  
     @if(session('success'))
@@ -398,8 +403,10 @@
             const index = lessonsList.findIndex(l => l.id === id);
             if (index !== -1) {
                 loadLessonByIndex(index);
-                // Scroll to video box on mobile
-                document.querySelector('.video-box').scrollIntoView({ behavior: 'smooth' });
+                // Scroll to video box only on mobile
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.video-box').scrollIntoView({ behavior: 'smooth' });
+                }
             }
         }
 
