@@ -200,6 +200,22 @@
                 transform: translateY(0);
             }
         }
+
+        /* Forgot password link styles on login form */
+        .forgot-password-link {
+            color: #da6319;
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .forgot-password-link:hover {
+            text-decoration: underline !important;
+            opacity: 0.85;
+        }
     </style>
 </head>
 
@@ -311,7 +327,7 @@
                     placeholder="{{ app()->getLocale() === 'ar' ? 'كلمة المرور' : 'Password' }}" required>
 
                 <div style="display: flex; justify-content: flex-end; margin-top: -5px;">
-                    <a href="#" onclick="openForgotPasswordPopup(event)" style="color: #da6319; font-size: 0.85rem; text-decoration: none; font-weight: 500; transition: opacity 0.2s; cursor: pointer;">
+                    <a href="#" onclick="openForgotPasswordPopup(event)" class="forgot-password-link">
                         {{ app()->getLocale() === 'ar' ? 'نسيت كلمة المرور؟' : 'Forgot Password?' }}
                     </a>
                 </div>
