@@ -381,6 +381,15 @@
             const activeLi = document.getElementById('lesson-li-' + lesson.id);
             if (activeLi) {
                 activeLi.classList.add('active-lesson');
+
+                // Open the parent chapter containing this lesson and close others
+                const parentChapter = activeLi.closest('.chapter');
+                if (parentChapter) {
+                    document.querySelectorAll('.chapter').forEach(ch => {
+                        ch.classList.remove('open');
+                    });
+                    parentChapter.classList.add('open');
+                }
             }
 
             // 4. Update dynamic work files / attachments

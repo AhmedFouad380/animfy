@@ -268,13 +268,11 @@
     </div>
 
     <!-- Global Alerts for validation errors -->
-    @if($errors->any() || session('error'))
+    @if(($errors->any() && !old('email') && !old('name') && !$errors->forgot->any()) || session('error'))
         <div class="container" style="margin-top: 20px;">
             <div class="alert-error">
                 @if(session('error'))
                     {{ session('error') }}
-                @elseif($errors->forgot->any())
-                    {{ $errors->forgot->first() }}
                 @else
                     {{ $errors->first() }}
                 @endif
@@ -298,6 +296,12 @@
         <div class="popup-box">
             <button class="close-popup" onclick="closePopup('login-popup')">&times;</button>
             <h2>{{ app()->getLocale() === 'ar' ? 'تسجيل الدخول' : 'Login' }}</h2>
+
+            @if($errors->any() && !$errors->forgot->any() && !old('name'))
+                <div class="alert-error" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); padding: 10px 15px; border-radius: 8px; font-size: 0.85rem; text-align: center; margin-bottom: 15px;">
+                    {{ $errors->first() }}
+                </div>
+            @endif
 
             <form action="{{ route('login') }}" method="POST">
                 @csrf
@@ -330,6 +334,12 @@
                 {{ app()->getLocale() === 'ar' ? 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.' : 'Enter your email and we will send you a link to reset your password.' }}
             </p>
 
+            @if($errors->forgot->any())
+                <div class="alert-error" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); padding: 10px 15px; border-radius: 8px; font-size: 0.85rem; text-align: center; margin-bottom: 15px;">
+                    {{ $errors->forgot->first() }}
+                </div>
+            @endif
+
             <form action="{{ route('password.email') }}" method="POST">
                 @csrf
                 <input type="email" name="email" value="{{ old('email') }}"
@@ -349,6 +359,12 @@
         <div class="popup-box">
             <button class="close-popup" onclick="closePopup('register-popup')">&times;</button>
             <h2>{{ app()->getLocale() === 'ar' ? 'إنشاء حساب جديد' : 'Create Account' }}</h2>
+
+            @if($errors->any() && old('name'))
+                <div class="alert-error" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); padding: 10px 15px; border-radius: 8px; font-size: 0.85rem; text-align: center; margin-bottom: 15px;">
+                    {{ $errors->first() }}
+                </div>
+            @endif
 
             <form action="{{ route('register') }}" method="POST">
                 @csrf
