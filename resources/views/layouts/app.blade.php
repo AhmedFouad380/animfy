@@ -273,6 +273,8 @@
             <div class="alert-error">
                 @if(session('error'))
                     {{ session('error') }}
+                @elseif($errors->forgot->any())
+                    {{ $errors->forgot->first() }}
                 @else
                     {{ $errors->first() }}
                 @endif
@@ -280,10 +282,19 @@
         </div>
     @endif
 
+    <!-- Global Alerts for success messages -->
+    @if(session('status'))
+        <div class="container" style="margin-top: 20px;">
+            <div class="alert-success" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
+                {{ session('status') }}
+            </div>
+        </div>
+    @endif
+
     <!-- ==========================================
        LOGIN POPUP
   =========================================== -->
-    <div id="login-popup" class="popup-overlay {{ $errors->any() && old('email') ? 'show' : '' }}">
+    <div id="login-popup" class="popup-overlay {{ $errors->any() && old('email') && !$errors->forgot->any() ? 'show' : '' }}">
         <div class="popup-box">
             <button class="close-popup" onclick="closePopup('login-popup')">&times;</button>
             <h2>{{ app()->getLocale() === 'ar' ? 'تسجيل الدخول' : 'Login' }}</h2>
@@ -295,8 +306,37 @@
                 <input type="password" name="password"
                     placeholder="{{ app()->getLocale() === 'ar' ? 'كلمة المرور' : 'Password' }}" required>
 
+                <div style="display: flex; justify-content: flex-end; margin-top: -5px;">
+                    <a href="#" onclick="openForgotPasswordPopup(event)" style="color: #da6319; font-size: 0.85rem; text-decoration: none; font-weight: 500; transition: opacity 0.2s; cursor: pointer;">
+                        {{ app()->getLocale() === 'ar' ? 'نسيت كلمة المرور؟' : 'Forgot Password?' }}
+                    </a>
+                </div>
+
                 <button type="submit" class="buy-btn">
                     {{ app()->getLocale() === 'ar' ? 'دخول' : 'Login' }}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       FORGOT PASSWORD POPUP
+  =========================================== -->
+    <div id="forgot-password-popup" class="popup-overlay {{ $errors->forgot->any() ? 'show' : '' }}">
+        <div class="popup-box">
+            <button class="close-popup" onclick="closePopup('forgot-password-popup')">&times;</button>
+            <h2>{{ app()->getLocale() === 'ar' ? 'استعادة كلمة المرور' : 'Reset Password' }}</h2>
+            <p style="font-size: 0.9rem; color: #555; text-align: center; margin-top: -5px; line-height: 1.4;">
+                {{ app()->getLocale() === 'ar' ? 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.' : 'Enter your email and we will send you a link to reset your password.' }}
+            </p>
+
+            <form action="{{ route('password.email') }}" method="POST">
+                @csrf
+                <input type="email" name="email" value="{{ old('email') }}"
+                    placeholder="{{ app()->getLocale() === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }}" required>
+
+                <button type="submit" class="buy-btn">
+                    {{ app()->getLocale() === 'ar' ? 'إرسال رابط الاستعادة' : 'Send Reset Link' }}
                 </button>
             </form>
         </div>
@@ -351,12 +391,22 @@
     <script>
         // Automatically reopen popups if validation errors exist
         @if ($errors->any())
-            @if (old('name'))
+            @if ($errors->forgot->any())
+                openPopup('forgot-password-popup');
+            @elseif (old('name'))
                 openPopup('register-popup');
             @else
                 openPopup('login-popup');
             @endif
         @endif
+
+        function openForgotPasswordPopup(event) {
+            if (event) event.preventDefault();
+            closePopup('login-popup');
+            setTimeout(() => {
+                openPopup('forgot-password-popup');
+            }, 300);
+        }
 
             function openPopup(id) {
                 document.getElementById(id).style.display = 'flex';

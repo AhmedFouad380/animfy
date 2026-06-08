@@ -331,7 +331,7 @@
               </div>
               <a href="{{ route('classroom', $course->id) }}" class="buy-btn"
                 style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
-                {{ app()->getLocale() === 'ar' ? 'مشاهدة الكورس' : 'View Course' }}
+                {{ app()->getLocale() === 'ar' ? 'مشاهدة الكورس' : 'Watch Course' }}
               </a>
             @else
               <div class="price">

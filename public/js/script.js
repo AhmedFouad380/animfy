@@ -87,23 +87,16 @@ function showTab(tabName, clickedTab){
     POPUPS
 ========================= */
 
-function openPopup(id){
-
-    document.getElementById(id).style.display = "flex";
-}
-
-function closePopup(id){
-
-    document.getElementById(id).style.display = "none";
-}
-
 document.querySelectorAll('.popup-overlay').forEach(popup => {
     popup.addEventListener('click', (e) => {
         if(e.target === popup){
-            if (typeof closePopup === 'function') {
-                closePopup(popup.id);
+            if (typeof window.closePopup === 'function') {
+                window.closePopup(popup.id);
             } else {
-                popup.style.display = "none";
+                popup.classList.remove('show');
+                setTimeout(() => {
+                    popup.style.display = "none";
+                }, 300);
             }
         }
     });

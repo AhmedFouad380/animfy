@@ -81,52 +81,18 @@ window.addEventListener("scroll", () => {
 
 
 
-// =========================
-// POPUPS
-// =========================
-
-function openPopup(id){
-    document.getElementById(id).style.display = "flex";
-}
-
-function closePopup(id){
-    document.getElementById(id).style.display = "none";
-}
-
 document.querySelectorAll('.popup-overlay').forEach(popup => {
     popup.addEventListener('click', (e) => {
         if(e.target === popup){
-            popup.style.display = "none";
+            if (typeof window.closePopup === 'function') {
+                window.closePopup(popup.id);
+            } else {
+                popup.classList.remove('show');
+                setTimeout(() => {
+                    popup.style.display = "none";
+                }, 300);
+            }
         }
     });
-});
-
-
-/* =========================
-    Code Country
-========================= */
-const phoneInput = document.querySelector("#phone");
-
-window.intlTelInput(phoneInput, {
-    initialCountry: "eg",
-    separateDialCode: true,
-    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/utils.js"
-});
-
-const input = document.querySelector("#phone");
-
-// منع أي حروف لحظة الكتابة
-input.addEventListener("input", function () {
-    this.value = this.value.replace(/\D/g, "").slice(0, 15);
-});
-
-// منع paste فيه حروف
-input.addEventListener("paste", function (e) {
-    let pasted = (e.clipboardData || window.clipboardData).getData("text");
-    
-    if (/\D/.test(pasted)) {
-        e.preventDefault();
-        this.value = pasted.replace(/\D/g, "").slice(0, 15);
-    }
 });
 

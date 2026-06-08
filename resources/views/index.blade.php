@@ -125,7 +125,7 @@
                     </span> -->
               </div>
 
-              <div class="price" style="display: flex; align-items: center;">
+              <div class="price" style="display: flex; align-items: center; {{ in_array($course->id, $enrolledCourseIds) ? 'justify-content: center; width: 100%;' : '' }}">
                 @if(in_array($course->id, $enrolledCourseIds))
                   <span class="purchased-badge" style="background: #10b981; color: #fff; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
                     <i class="fa-solid fa-circle-check"></i>
@@ -166,7 +166,7 @@
               <div class="course-title" style="margin-top: 15px;">{{ $addon->title }}</div>
               <div class="course-slogan">{{ $addon->description_header }}</div>
 
-              <div class="price" style="display: flex; align-items: center;">
+              <div class="price" style="display: flex; align-items: center; {{ in_array($addon->id, $enrolledAddonIds) ? 'justify-content: center; width: 100%;' : '' }}">
                 @if(in_array($addon->id, $enrolledAddonIds))
                   <span class="purchased-badge" style="background: #10b981; color: #fff; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
                     <i class="fa-solid fa-circle-check"></i>
@@ -207,7 +207,7 @@
               <div class="course-title" style="margin-top: 15px;">{{ $object->title }}</div>
               <div class="course-slogan">{{ $object->description_header }}</div>
 
-              <div class="price" style="display: flex; align-items: center;">
+              <div class="price" style="display: flex; align-items: center; {{ in_array($object->id, $enrolledObjectIds) ? 'justify-content: center; width: 100%;' : '' }}">
                 @if(in_array($object->id, $enrolledObjectIds))
                   <span class="purchased-badge" style="background: #10b981; color: #fff; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
                     <i class="fa-solid fa-circle-check"></i>

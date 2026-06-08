@@ -79,7 +79,6 @@
         .download-btn {
             background: transparent !important;
             border: none !important;
-            color: #000 !important;
             padding: 4px 8px !important;
             border-radius: 4px !important;
             cursor: pointer;
@@ -89,9 +88,20 @@
             align-items: center !important;
         }
 
-        .download-btn:hover {
-            background: transparent !important;
+        /* Active lesson download button (Black, White on Hover) */
+        .lessons li.active-lesson .download-btn {
+            color: #000 !important;
+        }
+        .lessons li.active-lesson .download-btn:hover {
             color: #fff !important;
+        }
+
+        /* Inactive lesson download button (Always White, Orange on Hover) */
+        .lessons li:not(.active-lesson) .download-btn {
+            color: #fff !important;
+        }
+        .lessons li:not(.active-lesson) .download-btn:hover {
+            color: #da6319 !important;
         }
 
         .chapter-header {
@@ -162,27 +172,32 @@
             color: #fff;
             box-shadow: 0 4px 15px rgba(218, 99, 25, 0.2);
         }
-    </style>
 
+        /* Prevent cutting off lessons list and allow sidebar scroll to handle overflow */
+        .chapter.open .lessons {
+            max-height: none !important;
+        }
+    </style>
+ 
     @if(session('success'))
         <div class="alert-error" id="success-alert"
             style="background: rgba(16, 185, 129, 0.15); color: #10b981; border-color: rgba(16, 185, 129, 0.3); margin-bottom: 20px;">
             {{ session('success') }}
         </div>
     @endif
-
+ 
     <div class="layout">
         <!-- Sidebar (Chapters & Lessons) -->
         <div class="sidebar">
             <h2 class="course-name">{{ $course->title }}</h2>
-
+ 
             @forelse($course->chapters as $index => $chapter)
                 <div class="chapter {{ $index === 0 ? 'open' : '' }}" id="chapter-classroom-{{ $chapter->id }}">
                     <div class="chapter-header" onclick="toggleClassroomChapter({{ $chapter->id }})">
                         <span>{{ $chapter->title }}</span>
                         <i class="fa-solid fa-chevron-down arrow"></i>
                     </div>
-
+ 
                     <ul class="lessons">
                         @forelse($chapter->lessons->sortBy('sort_order') as $lesson)
                             <li class="lesson-item-click" id="lesson-li-{{ $lesson->id }}"
@@ -207,11 +222,11 @@
                 </p>
             @endforelse
         </div>
-
+ 
         <!-- Main Video Player & Lesson Details -->
         <div class="main">
-            <div class="video-box" style="background:#000;">
-                <video id="classroom-video" controls controlsList="nodownload" style="width: 100%; border-radius: 8px;">
+            <div class="video-box" style="background:#000; aspect-ratio: 16/9; max-height: 480px; width: 100%; border-radius: 8px; overflow: hidden;">
+                <video id="classroom-video" controls controlsList="nodownload" style="width: 100%; height: 100%; object-fit: contain; aspect-ratio: 16/9; border-radius: 8px; background: #000;">
                     <source id="video-source" src="" type="video/mp4">
                     {{ app()->getLocale() === 'ar' ? 'متصفحك لا يدعم تشغيل الفيديوهات.' : 'Your browser does not support HTML video.' }}
                 </video>
@@ -270,6 +285,7 @@
 
             <form action="{{ route('course.review', $course->id) }}" method="POST">
                 @csrf
+                <input type="hidden" name="lesson_id" id="review-form-lesson-id" value="">
                 <!-- Stars selection container -->
                 <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 20px;">
                     @for($i = 1; $i <= 5; $i++)
@@ -320,7 +336,19 @@
         // Load initial first lesson
         document.addEventListener("DOMContentLoaded", function () {
             if (lessonsList.length > 0) {
-                loadLessonByIndex(0);
+                // Check if there is a lesson query param in the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const lessonIdParam = urlParams.get('lesson');
+                let initialIndex = 0;
+
+                if (lessonIdParam) {
+                    const foundIndex = lessonsList.findIndex(l => l.id == lessonIdParam);
+                    if (foundIndex !== -1) {
+                        initialIndex = foundIndex;
+                    }
+                }
+
+                loadLessonByIndex(initialIndex);
             } else {
                 document.getElementById('active-lesson-title').innerText = "{{ app()->getLocale() === 'ar' ? 'لا توجد دروس مرفوعة بعد.' : 'No lessons uploaded yet.' }}";
             }
@@ -359,6 +387,11 @@
             } else {
                 attachBox.style.display = 'none';
             }
+
+            // 5. Update URL query parameter without page reload
+            const url = new URL(window.location.href);
+            url.searchParams.set('lesson', lesson.id);
+            window.history.replaceState(null, '', url.toString());
         }
 
         function playLessonById(id) {
@@ -399,6 +432,10 @@
 
         // Review modal interactive control
         function openReviewModal() {
+            // Set the active lesson ID in the form to preserve state upon redirect
+            if (lessonsList.length > 0 && lessonsList[currentLessonIndex]) {
+                document.getElementById('review-form-lesson-id').value = lessonsList[currentLessonIndex].id;
+            }
             document.getElementById('reviewPopup').style.display = 'flex';
             setRatingSelection(5); // Default to 5 stars
         }

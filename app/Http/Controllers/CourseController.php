@@ -110,6 +110,8 @@ class CourseController extends Controller
             ? 'تمت إضافة التقييم بنجاح!'
             : 'Review added successfully!';
 
-        return back()->with('success', $message);
+        $lessonId = $request->input('lesson_id');
+        return redirect()->to(route('classroom', $course->id) . ($lessonId ? '?lesson=' . $lessonId : ''))
+            ->with('success', $message);
     }
 }
