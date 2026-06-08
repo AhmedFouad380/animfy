@@ -18,7 +18,7 @@
             <input type="hidden" name="token" value="{{ $token }}">
 
             <!-- Email Address -->
-            <div>
+            <div style="display:none;">
                 <label style="display: block; font-weight: 600; color: #444; margin-bottom: 8px; font-size: 0.9rem;">
                     {{ app()->getLocale() === 'ar' ? 'البريد الإلكتروني' : 'Email Address' }}
                 </label>
