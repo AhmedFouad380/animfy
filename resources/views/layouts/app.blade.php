@@ -298,7 +298,7 @@
 
     <!-- Global Alerts for success messages -->
     @if(session('status'))
-        <div class="container" style="margin-top: 20px;">
+        <div class="container" style="margin-top: 20px;" id="status-success-alert">
             <div class="alert-success" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
                 {{ session('status') }}
             </div>
@@ -401,6 +401,35 @@
         </div>
     </div>
 
+    <!-- ==========================================
+       PAYMENT METHOD POPUP
+  =========================================== -->
+    <div id="payment-method-popup" class="popup-overlay">
+        <div class="popup-box" style="max-width: 400px; padding: 30px 25px;">
+            <button class="close-popup" onclick="closePopup('payment-method-popup')">&times;</button>
+            <h2 style="font-size: 1.4rem; margin-bottom: 12px; font-weight: 700; text-align: center;">
+                {{ app()->getLocale() === 'ar' ? 'اختر طريقة الدفع' : 'Choose Payment Method' }}
+            </h2>
+            <p style="font-size: 0.9rem; color: #666; text-align: center; margin-bottom: 25px; line-height: 1.5;">
+                {{ app()->getLocale() === 'ar' ? 'يرجى اختيار وسيلة الدفع المفضلة لديك لإتمام طلبك' : 'Please select your preferred payment method to complete your order.' }}
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                <!-- Option 1: Credit Card (Paymob) -->
+                <a id="pay-card-btn" href="#" class="buy-btn" style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; margin: 0; padding: 12px 15px; font-weight: 600; font-size: 0.95rem; border-radius: 8px;">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>{{ app()->getLocale() === 'ar' ? 'الدفع بالبطاقة البنكية' : 'Pay via Card' }}</span>
+                </a>
+                
+                <!-- Option 2: InstaPay -->
+                <a id="pay-instapay-btn" href="#" class="buy-btn" style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; margin: 0; padding: 12px 15px; font-weight: 600; font-size: 0.95rem; border-radius: 8px;">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span>{{ app()->getLocale() === 'ar' ? 'الدفع عبر إنستا باي (InstaPay)' : 'Pay via InstaPay' }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     @yield('content')
 
     <!-- ==========================================
@@ -431,6 +460,12 @@
                 openPopup('login-popup');
             @endif
         @endif
+
+        function openPaymentPopup(type, id, cardUrl, instapayUrl) {
+            document.getElementById('pay-card-btn').href = cardUrl;
+            document.getElementById('pay-instapay-btn').href = instapayUrl;
+            openPopup('payment-method-popup');
+        }
 
         function openForgotPasswordPopup(event) {
             if (event) event.preventDefault();
@@ -496,6 +531,20 @@
                         icon.className = 'fa-solid fa-chevron-down';
                     }
                 }
+            }
+        });
+
+        // Automatically hide success/status alert after 7 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            const statusAlert = document.getElementById('status-success-alert');
+            if (statusAlert) {
+                setTimeout(() => {
+                    statusAlert.style.transition = 'opacity 0.5s ease';
+                    statusAlert.style.opacity = '0';
+                    setTimeout(() => {
+                        statusAlert.remove();
+                    }, 500);
+                }, 7000);
             }
         });
     </script>

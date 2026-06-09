@@ -17,7 +17,7 @@ class PaymentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static bool $shouldRegisterNavigation = true;
 
     protected static ?string $navigationLabel = 'Payments';
     protected static ?string $modelLabel = 'Payment';
@@ -32,7 +32,18 @@ class PaymentResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('enrollment_id')
                             ->relationship('enrollment', 'id')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => "Student: {$record->user->name} - Course: {$record->course->title}")
+                            ->getOptionLabelFromRecordUsing(function ($record) {
+                                $productName = '';
+                                if ($record->course) {
+                                    $productName = "Course: {$record->course->title}";
+                                } elseif ($record->addon) {
+                                    $productName = "Addon: {$record->addon->title}";
+                                } elseif ($record->threeDObject) {
+                                    $productName = "3D Object: {$record->threeDObject->title}";
+                                }
+                                $studentName = $record->user ? $record->user->name : 'Unknown';
+                                return "Student: {$studentName} - {$productName}";
+                            })
                             ->required()
                             ->preload()
                             ->searchable()
@@ -80,10 +91,23 @@ class PaymentResource extends Resource
                     ->label('Student')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('enrollment.course.title')
-                    ->label('Course')
-                    ->searchable()
-                    ->sortable()
+                Tables\Columns\TextColumn::make('product_title')
+                    ->label('Product')
+                    ->state(function (Payment $record): string {
+                        $enrollment = $record->enrollment;
+                        if (!$enrollment) return '-';
+                        if ($enrollment->course) return 'Course: ' . $enrollment->course->title;
+                        if ($enrollment->addon) return 'Addon: ' . $enrollment->addon->title;
+                        if ($enrollment->threeDObject) return '3D Object: ' . $enrollment->threeDObject->title;
+                        return '-';
+                    })
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->whereHas('enrollment', function ($q) use ($search) {
+                            $q->whereHas('course', fn($c) => $c->where('title', 'like', "%{$search}%"))
+                              ->orWhereHas('addon', fn($a) => $a->where('title', 'like', "%{$search}%"))
+                              ->orWhereHas('threeDObject', fn($o) => $o->where('title', 'like', "%{$search}%"));
+                        });
+                    })
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->money('EGP')

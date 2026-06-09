@@ -369,6 +369,194 @@ class PaymentController extends Controller
     }
 
     /**
+     * Start InstaPay Checkout process for a course.
+     */
+    public function checkoutInstapayCourse($course_id)
+    {
+        $course = Course::findOrFail($course_id);
+
+        // 1. Check if student is already enrolled actively
+        $activeEnrollment = Enrollment::where('user_id', auth()->id())
+            ->where('course_id', $course->id)
+            ->where('status', 'active')
+            ->exists();
+
+        if ($activeEnrollment) {
+            $message = app()->getLocale() === 'ar'
+                ? 'أنت مشترك بالفعل في هذه الدورة التدريبية.'
+                : 'You are already actively enrolled in this course.';
+            return redirect()->route('classroom', $course->id)->with('success', $message);
+        }
+
+        // 2. Find or create a pending enrollment
+        $enrollment = Enrollment::firstOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'course_id' => $course->id
+            ],
+            [
+                'price_paid' => $course->discount_price ?? $course->price,
+                'status' => 'pending'
+            ]
+        );
+
+        if ($enrollment->status === 'cancelled') {
+            $enrollment->update(['status' => 'pending']);
+        }
+
+        $instapayAddress = \App\Models\Setting::get('instapay_address') ?: 'username@instapay';
+
+        return view('payment-instapay', [
+            'enrollment' => $enrollment,
+            'model' => $course,
+            'type' => 'course',
+            'instapayAddress' => $instapayAddress,
+            'price' => $course->discount_price ?? $course->price
+        ]);
+    }
+
+    /**
+     * Start InstaPay Checkout process for an addon.
+     */
+    public function checkoutInstapayAddon($addon_id)
+    {
+        $addon = \App\Models\Addon::findOrFail($addon_id);
+
+        // 1. Check if student is already enrolled actively
+        $activeEnrollment = Enrollment::where('user_id', auth()->id())
+            ->where('addon_id', $addon->id)
+            ->where('status', 'active')
+            ->exists();
+
+        if ($activeEnrollment) {
+            $message = app()->getLocale() === 'ar'
+                ? 'أنت مشترك بالفعل في هذا الملحق.'
+                : 'You have already purchased this addon.';
+            return redirect()->route('addon.show', $addon->slug)->with('success', $message);
+        }
+
+        // 2. Find or create a pending enrollment
+        $enrollment = Enrollment::firstOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'addon_id' => $addon->id
+            ],
+            [
+                'price_paid' => $addon->discount_price ?? $addon->price,
+                'status' => 'pending'
+            ]
+        );
+
+        if ($enrollment->status === 'cancelled') {
+            $enrollment->update(['status' => 'pending']);
+        }
+
+        $instapayAddress = \App\Models\Setting::get('instapay_address') ?: 'username@instapay';
+
+        return view('payment-instapay', [
+            'enrollment' => $enrollment,
+            'model' => $addon,
+            'type' => 'addon',
+            'instapayAddress' => $instapayAddress,
+            'price' => $addon->discount_price ?? $addon->price
+        ]);
+    }
+
+    /**
+     * Start InstaPay Checkout process for a 3D Object.
+     */
+    public function checkoutInstapayObject($object_id)
+    {
+        $object = \App\Models\ThreeDObject::findOrFail($object_id);
+
+        // 1. Check if student is already enrolled actively
+        $activeEnrollment = Enrollment::where('user_id', auth()->id())
+            ->where('three_d_object_id', $object->id)
+            ->where('status', 'active')
+            ->exists();
+
+        if ($activeEnrollment) {
+            $message = app()->getLocale() === 'ar'
+                ? 'أنت مشترك بالفعل في هذا المجسم.'
+                : 'You have already purchased this 3D object.';
+            return redirect()->route('object.show', $object->slug)->with('success', $message);
+        }
+
+        // 2. Find or create a pending enrollment
+        $enrollment = Enrollment::firstOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'three_d_object_id' => $object->id
+            ],
+            [
+                'price_paid' => $object->discount_price ?? $object->price,
+                'status' => 'pending'
+            ]
+        );
+
+        if ($enrollment->status === 'cancelled') {
+            $enrollment->update(['status' => 'pending']);
+        }
+
+        $instapayAddress = \App\Models\Setting::get('instapay_address') ?: 'username@instapay';
+
+        return view('payment-instapay', [
+            'enrollment' => $enrollment,
+            'model' => $object,
+            'type' => 'object',
+            'instapayAddress' => $instapayAddress,
+            'price' => $object->discount_price ?? $object->price
+        ]);
+    }
+
+    /**
+     * Confirm student payment transfer via InstaPay.
+     */
+    public function confirmInstapayPayment(Request $request, $enrollment_id)
+    {
+        $enrollment = Enrollment::findOrFail($enrollment_id);
+
+        // Security check
+        if ($enrollment->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $senderName = $request->input('sender_name');
+        $transactionReference = $request->input('transaction_reference');
+
+        // Create or update a payment record to log this pending manual transfer
+        Payment::updateOrCreate(
+            [
+                'enrollment_id' => $enrollment->id,
+                'payment_method' => 'instapay',
+            ],
+            [
+                'transaction_reference' => $transactionReference ?: 'INSTAPAY_' . time(),
+                'amount' => $enrollment->price_paid,
+                'status' => 'pending',
+                'paymob_payload' => [
+                    'sender_name' => $senderName,
+                    'transaction_reference' => $transactionReference,
+                    'confirmed_at' => now()->toDateTimeString()
+                ]
+            ]
+        );
+
+        $tab = 'courses';
+        if ($enrollment->addon_id) {
+            $tab = 'addons';
+        } elseif ($enrollment->three_d_object_id) {
+            $tab = 'objects';
+        }
+
+        $message = app()->getLocale() === 'ar'
+            ? 'تم تسجيل طلبك بنجاح! سيتم مراجعة التحويل وتفعيل الاشتراك من قبل الإدارة بعد تأكيد إتمام عملية الدفع.'
+            : 'Your request has been successfully recorded! The administration will review the transfer and activate your subscription after confirming the payment process.';
+
+        return redirect()->route('my-courses', ['tab' => $tab])->with('success', $message);
+    }
+
+    /**
      * Helper to return payment connection error messages
      */
     private function handleCheckoutFailure($course)

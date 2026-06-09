@@ -5,6 +5,8 @@ namespace App\Filament\Pages;
 use App\Models\Setting;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -35,6 +37,10 @@ class ManageSettings extends Page implements HasForms
             'paymob_integration_id' => Setting::get('paymob_integration_id'),
             'paymob_iframe_id' => Setting::get('paymob_iframe_id'),
             'paymob_hmac_secret' => Setting::get('paymob_hmac_secret'),
+            'instapay_address' => Setting::get('instapay_address'),
+            'instapay_qr_code' => Setting::get('instapay_qr_code'),
+            'instapay_steps_ar' => Setting::get('instapay_steps_ar'),
+            'instapay_steps_en' => Setting::get('instapay_steps_en'),
         ]);
     }
 
@@ -72,6 +78,32 @@ class ManageSettings extends Page implements HasForms
                             ->required(),
                     ])
                     ->columns(2),
+
+                Section::make('InstaPay Configuration')
+                    ->description('Configure InstaPay payment details for students to transfer manually.')
+                    ->schema([
+                        TextInput::make('instapay_address')
+                            ->label('InstaPay Address (IPA or Phone)')
+                            ->placeholder('e.g. username@instapay or mobile phone number')
+                            ->required(),
+
+                        FileUpload::make('instapay_qr_code')
+                            ->label('InstaPay QR Code Image')
+                            ->image()
+                            ->directory('settings')
+                            ->helperText('Upload a custom InstaPay QR code image. If left blank, it will fallback to the default image in public folder.'),
+
+                        RichEditor::make('instapay_steps_ar')
+                            ->label('Transfer Steps (Arabic)')
+                            ->helperText('أدخل خطوات التحويل للطالب باللغة العربية. استخدم الكلمة المفتاحية :price لعرض السعر ديناميكياً (مثال: "تأكد من تحويل :price جنيه مصري").')
+                            ->required(),
+
+                        RichEditor::make('instapay_steps_en')
+                            ->label('Transfer Steps (English)')
+                            ->helperText('Enter the transfer steps in English. Use the placeholder :price to display the dynamic price (e.g. "Transfer exactly :price EGP").')
+                            ->required(),
+                    ])
+                    ->columns(1),
             ])
             ->statePath('data');
     }

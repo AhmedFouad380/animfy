@@ -94,10 +94,10 @@
               </div>
 
               @auth
-                <a href="{{ route('checkout.object', $object->id) }}" class="buy-btn"
-                  style="text-align: center; display: block; text-decoration: none; line-height: 1.1; margin-top: 10px;">
+                <button onclick="openPaymentPopup('object', {{ $object->id }}, '{{ route('checkout.object', $object->id) }}', '{{ route('checkout.instapay.object', $object->id) }}')" class="buy-btn"
+                  style="text-align: center; display: block; text-decoration: none; line-height: 1.1; margin-top: 10px; width: 100%; border: none; cursor: pointer;">
                   {{ app()->getLocale() === 'ar' ? 'شراء الآن' : 'Buy Now' }}
-                </a>
+                </button>
               @else
                 <button class="buy-btn" onclick="openPopup('login-popup')" style="margin-top: 10px;">
                   {{ app()->getLocale() === 'ar' ? 'شراء الآن' : 'Buy Now' }}

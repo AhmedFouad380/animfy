@@ -369,10 +369,10 @@
               </div>
 
               @auth
-                <a href="{{ route('checkout', $course->id) }}" class="buy-btn"
-                  style="text-align: center; display: block; text-decoration: none; line-height: 1.1;">
+                <button onclick="openPaymentPopup('course', {{ $course->id }}, '{{ route('checkout', $course->id) }}', '{{ route('checkout.instapay.course', $course->id) }}')" class="buy-btn"
+                  style="text-align: center; display: block; text-decoration: none; line-height: 1.1; width: 100%; border: none; cursor: pointer;">
                   {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}
-                </a>
+                </button>
               @else
                 <button class="buy-btn" onclick="openPopup('login-popup')">
                   {{ app()->getLocale() === 'ar' ? 'اشترك في الدورة الآن' : 'Enroll Now' }}

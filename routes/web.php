@@ -48,6 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout-addon/{addon_id}', [PaymentController::class, 'checkoutAddon'])->name('checkout.addon');
     Route::get('/checkout-object/{object_id}', [PaymentController::class, 'checkoutObject'])->name('checkout.object');
 
+    // InstaPay Checkout Routes
+    Route::get('/checkout-instapay/{course_id}', [PaymentController::class, 'checkoutInstapayCourse'])->name('checkout.instapay.course');
+    Route::get('/checkout-instapay-addon/{addon_id}', [PaymentController::class, 'checkoutInstapayAddon'])->name('checkout.instapay.addon');
+    Route::get('/checkout-instapay-object/{object_id}', [PaymentController::class, 'checkoutInstapayObject'])->name('checkout.instapay.object');
+    Route::post('/checkout-instapay-confirm/{enrollment_id}', [PaymentController::class, 'confirmInstapayPayment'])->name('checkout.instapay.confirm');
+
     // Secure downloads
     Route::get('/download-addon/{addon_id}', [HomeController::class, 'downloadAddon'])->name('download.addon');
     Route::get('/download-object/{object_id}', [HomeController::class, 'downloadObject'])->name('download.object');

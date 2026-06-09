@@ -96,10 +96,10 @@
                 <img src="{{ asset('imgs/payment-methods/orange.png') }}" alt="Orange Cash">
               </div>
               @auth
-                <a href="{{ route('checkout.addon', $addon->id) }}" class="buy-btn"
-                  style="text-align: center; display: block; text-decoration: none; line-height: 1.1; margin-top: 10px;">
+                <button onclick="openPaymentPopup('addon', {{ $addon->id }}, '{{ route('checkout.addon', $addon->id) }}', '{{ route('checkout.instapay.addon', $addon->id) }}')" class="buy-btn"
+                  style="text-align: center; display: block; text-decoration: none; line-height: 1.1; margin-top: 10px; width: 100%; border: none; cursor: pointer;">
                   {{ app()->getLocale() === 'ar' ? 'شراء الآن' : 'Buy Now' }}
-                </a>
+                </button>
               @else
                 <button class="buy-btn" onclick="openPopup('login-popup')" style="margin-top: 10px;">
                   {{ app()->getLocale() === 'ar' ? 'شراء الآن' : 'Buy Now' }}
